@@ -4,17 +4,20 @@
 import PackageDescription
 
 let package = Package(
-    name: "mediquo-ios-sdk",
+    name: "MediQuoSDK",
+    platforms: [
+        .iOS(.v15),
+    ],
     products: [
         .library(
-            name: "mediquo-ios-sdk",
+            name: "MediQuoSDK",
             targets: ["MediQuoSDK"]),
     ],
     targets: [
         .binaryTarget(
             name: "MediQuoSDK",
-            url: "https://github.com/mediquo/mediquo-ios-sdk/releases/download/10.0.4-beta1/MediQuoSDK.xcframework.zip",
-            checksum: "6311f70bc4988a51289c1b61b9b41b37e7f5d332d217b022eb68e96c0250c364"
+            url: "https://filebin.net/uelp9pd8x9m62gvq/MediQuoSDK.xcframework.zip",
+            checksum: "4dd98edad262f2b2adbe026858df30383d7a3146ee8b88341651bad729c4a508"
         )
     ]
 )
