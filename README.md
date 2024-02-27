@@ -31,4 +31,30 @@ We support installation via Swift Package Manager and as a standalone XCFramewor
 
 ## Integration
 
-In order to integrate the SDK, we support both UIKit-based apps (the ones with `AppDelegate` and `SceneDelegate`) and SwiftUI-bases apps (the ones with `@main` and `WindowGroup`)
+In order to integrate the SDK, we support both UIKit-based apps (the ones with `AppDelegate` and `SceneDelegate`) and SwiftUI-based apps (the ones with `@main` and `WindowGroup`).
+
+Before you present the SDK make sure you have at hand these two values:
+- `API_KEY`: provided by mediQuo
+- `USER_ID`: created with Patients API
+
+Whenever you want to present the MediQuo functionality, use the following pattern:
+
+```swift
+Task {
+  let mediquo = try await MediQuo(environment: .production, apiKey: API_KEY, userID: USER_ID)
+  let view = mediquo.getSDKView(for: .professionalList)
+}
+```
+**Note:** You could create one instance of the `MediQuo` object tied to the lifetime of your App, just store it on your AppDelegate or any other way you manage your dependencies. Just make sure that if the user changes, this object gets recreated so the `USER_ID` is updated.
+
+After the `MediQuo` object is created, we call `getSDKView(for:)` in order to create a `SwiftUI.View` and add it do the hierarchy as you see fit. All the possibles views are defined in `MediQuo.ViewKind` and you can use Xcode's autocomplete to figure it out.
+
+## Push Integration
+
+The MediQuo SDK supports Firebase-based pushes as well as regular APNS based ones.
+
+Make sure to override your App Delegate's `application(_:, didRegisterForRemoteNotificationsWithDeviceToken: Data)` and add:
+
+```swift
+try? await mediquo.pushNotification(data, type: .appleAPNS)
+```
