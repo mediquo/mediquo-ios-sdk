@@ -2,6 +2,8 @@
 
 Welcome to MediQuoSDK for Apple Platforms,  the easiest way to integrate the MediQuo functionality into your app!
 
+This repository contains a sample app that you can inspect to see how to integrate the MediQuo SDK into your own Application.
+
 **Note:** If you are coming from one of the versions of the SDK previous to the v10.0 release, then this is a breaking change and you should delete all the integration you had before continuing. 
 
 ## Prerequisites
