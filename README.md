@@ -42,12 +42,15 @@ Whenever you want to present the MediQuo functionality, use the following patter
 ```swift
 Task {
   let mediquo = try await MediQuo(environment: .production, apiKey: API_KEY, userID: USER_ID)
-  let view = mediquo.getSDKView(for: .professionalList)
+  let vc = mediquo.getSDKViewController(for: .professionalList)
+  self.present(vc, animated: true)
 }
 ```
-**Note:** You could create one instance of the `MediQuo` object tied to the lifetime of your App, just store it on your AppDelegate or any other way you manage your dependencies. Just make sure that if the user changes, this object gets recreated so the `USER_ID` is updated.
+After the `MediQuo` object is created, we call `getSDKViewController(for:)` in order to create a `UIViewController` and add it do the hierarchy as you see fit (in this example, we're presenting this View Controller modally). Equivalent APIs are available for SwiftUI-based apps.
 
-After the `MediQuo` object is created, we call `getSDKView(for:)` in order to create a `SwiftUI.View` and add it do the hierarchy as you see fit. All the possibles views are defined in `MediQuo.ViewKind` and you can use Xcode's autocomplete to find the appropiate view for any use case.
+All the possibles views are defined in `MediQuo.ViewKind` and you can use Xcode's autocomplete to find the appropiate view for any use case.
+
+**Note:** You could create one instance of the `MediQuo` object tied to the lifetime of your App, just store it on your AppDelegate or any other way you manage your dependencies. Just make sure that if the user changes, this object gets recreated so the `USER_ID` is updated.
 
 ## Push Integration
 
