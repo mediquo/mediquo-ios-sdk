@@ -47,7 +47,7 @@ Task {
 ```
 **Note:** You could create one instance of the `MediQuo` object tied to the lifetime of your App, just store it on your AppDelegate or any other way you manage your dependencies. Just make sure that if the user changes, this object gets recreated so the `USER_ID` is updated.
 
-After the `MediQuo` object is created, we call `getSDKView(for:)` in order to create a `SwiftUI.View` and add it do the hierarchy as you see fit. All the possibles views are defined in `MediQuo.ViewKind` and you can use Xcode's autocomplete to figure it out.
+After the `MediQuo` object is created, we call `getSDKView(for:)` in order to create a `SwiftUI.View` and add it do the hierarchy as you see fit. All the possibles views are defined in `MediQuo.ViewKind` and you can use Xcode's autocomplete to find the appropiate view for any use case.
 
 ## Push Integration
 
@@ -58,3 +58,9 @@ Make sure to override your App Delegate's `application(_:, didRegisterForRemoteN
 ```swift
 try? await mediquo.pushNotification(data, type: .appleAPNS)
 ```
+
+When receiving a push, it is your app's responsability to parse the incoming message, create the MediQuo view and present it in order to allow the end user an opportunity to keep interacting with your app.
+
+### Customization
+
+The SDK will use your app's [Accent Color](https://developer.apple.com/documentation/xcode/specifying-your-apps-color-scheme) to customize it's look and feel. If you need any more customization points, feel free to open an [Issue](https://github.com/mediquo/mediquo-ios-sdk/issues) in this Repository to request any feature.  
