@@ -35,7 +35,7 @@ In order to integrate the SDK, we support both UIKit-based apps (the ones with `
 
 Before you present the SDK make sure you have at hand these two values:
 - `API_KEY`: provided by mediQuo
-- `USER_ID`: created with Patients API
+- `USER_ID`: created with [Patients API](https://developer.mediquo.com/docs/api/patients/)
 
 Whenever you want to present the MediQuo functionality, use the following pattern:
 
