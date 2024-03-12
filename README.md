@@ -61,7 +61,7 @@ The MediQuo SDK supports Firebase-based pushes as well as regular APNS based one
 Make sure to override your App Delegate's `application(_:, didRegisterForRemoteNotificationsWithDeviceToken: Data)` and add:
 
 ```swift
-try? await mediquo.pushNotification(data, type: .appleAPNS)
+try? await mediquo.setPushNotificationToken(data, type: .appleAPNS)
 ```
 
 When receiving a push, it is your app's responsability to parse the incoming message, create the MediQuo view and present it in order to allow the end user an opportunity to keep interacting with your app.
