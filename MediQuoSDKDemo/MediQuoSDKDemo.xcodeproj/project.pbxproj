@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A3451062BD2A06C00ED2369 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3451052BD2A06C00ED2369 /* AppDelegate.swift */; };
+		1A3451082BD2A06C00ED2369 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3451072BD2A06C00ED2369 /* SceneDelegate.swift */; };
+		1A34510A2BD2A06C00ED2369 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3451092BD2A06C00ED2369 /* ViewController.swift */; };
+		1A34510F2BD2A06D00ED2369 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A34510E2BD2A06D00ED2369 /* Assets.xcassets */; };
+		1A3451122BD2A06D00ED2369 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 1A3451112BD2A06D00ED2369 /* Base */; };
+		1A3451182BD2AF3900ED2369 /* MediQuoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 1A3451172BD2AF3900ED2369 /* MediQuoSDK */; };
 		F58161A92B8F76DB00D5D345 /* MediQuoSDKDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58161A82B8F76DB00D5D345 /* MediQuoSDKDemoApp.swift */; };
 		F58161AD2B8F76DC00D5D345 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F58161AC2B8F76DC00D5D345 /* Assets.xcassets */; };
 		F58161B02B8F76DC00D5D345 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F58161AF2B8F76DC00D5D345 /* Preview Assets.xcassets */; };
@@ -14,6 +20,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A3451032BD2A06C00ED2369 /* MediQuoSDKUIKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MediQuoSDKUIKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A3451052BD2A06C00ED2369 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1A3451072BD2A06C00ED2369 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		1A3451092BD2A06C00ED2369 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1A34510E2BD2A06D00ED2369 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1A3451112BD2A06D00ED2369 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1A3451132BD2A06D00ED2369 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F58161A52B8F76DB00D5D345 /* MediQuoSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MediQuoSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F58161A82B8F76DB00D5D345 /* MediQuoSDKDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediQuoSDKDemoApp.swift; sourceTree = "<group>"; };
 		F58161AC2B8F76DC00D5D345 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -22,6 +35,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1A3451002BD2A06C00ED2369 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A3451182BD2AF3900ED2369 /* MediQuoSDK in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F58161A22B8F76DB00D5D345 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -33,11 +54,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A3451042BD2A06C00ED2369 /* MediQuoSDKUIKitDemo */ = {
+			isa = PBXGroup;
+			children = (
+				1A3451052BD2A06C00ED2369 /* AppDelegate.swift */,
+				1A3451072BD2A06C00ED2369 /* SceneDelegate.swift */,
+				1A3451092BD2A06C00ED2369 /* ViewController.swift */,
+				1A34510E2BD2A06D00ED2369 /* Assets.xcassets */,
+				1A3451102BD2A06D00ED2369 /* LaunchScreen.storyboard */,
+				1A3451132BD2A06D00ED2369 /* Info.plist */,
+			);
+			path = MediQuoSDKUIKitDemo;
+			sourceTree = "<group>";
+		};
 		F581619C2B8F76DB00D5D345 = {
 			isa = PBXGroup;
 			children = (
 				F58161B62B8F76E900D5D345 /* mediquo-ios-sdk */,
 				F58161A72B8F76DB00D5D345 /* MediQuoSDKDemo */,
+				1A3451042BD2A06C00ED2369 /* MediQuoSDKUIKitDemo */,
 				F58161A62B8F76DB00D5D345 /* Products */,
 				F58161B72B8F772700D5D345 /* Frameworks */,
 			);
@@ -47,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				F58161A52B8F76DB00D5D345 /* MediQuoSDKDemo.app */,
+				1A3451032BD2A06C00ED2369 /* MediQuoSDKUIKitDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -79,6 +115,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1A3451022BD2A06C00ED2369 /* MediQuoSDKUIKitDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A3451162BD2A06D00ED2369 /* Build configuration list for PBXNativeTarget "MediQuoSDKUIKitDemo" */;
+			buildPhases = (
+				1A3450FF2BD2A06C00ED2369 /* Sources */,
+				1A3451002BD2A06C00ED2369 /* Frameworks */,
+				1A3451012BD2A06C00ED2369 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MediQuoSDKUIKitDemo;
+			packageProductDependencies = (
+				1A3451172BD2AF3900ED2369 /* MediQuoSDK */,
+			);
+			productName = MediQuoSDKUIKitDemo;
+			productReference = 1A3451032BD2A06C00ED2369 /* MediQuoSDKUIKitDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
 		F58161A42B8F76DB00D5D345 /* MediQuoSDKDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F58161B32B8F76DC00D5D345 /* Build configuration list for PBXNativeTarget "MediQuoSDKDemo" */;
@@ -106,9 +162,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1520;
+				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 1520;
 				TargetAttributes = {
+					1A3451022BD2A06C00ED2369 = {
+						CreatedOnToolsVersion = 15.3;
+					};
 					F58161A42B8F76DB00D5D345 = {
 						CreatedOnToolsVersion = 15.2;
 					};
@@ -128,11 +187,21 @@
 			projectRoot = "";
 			targets = (
 				F58161A42B8F76DB00D5D345 /* MediQuoSDKDemo */,
+				1A3451022BD2A06C00ED2369 /* MediQuoSDKUIKitDemo */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1A3451012BD2A06C00ED2369 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A34510F2BD2A06D00ED2369 /* Assets.xcassets in Resources */,
+				1A3451122BD2A06D00ED2369 /* Base in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F58161A32B8F76DB00D5D345 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -145,6 +214,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1A3450FF2BD2A06C00ED2369 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A34510A2BD2A06C00ED2369 /* ViewController.swift in Sources */,
+				1A3451062BD2A06C00ED2369 /* AppDelegate.swift in Sources */,
+				1A3451082BD2A06C00ED2369 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F58161A12B8F76DB00D5D345 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -155,7 +234,74 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		1A3451102BD2A06D00ED2369 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1A3451112BD2A06D00ED2369 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		1A3451142BD2A06D00ED2369 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MediQuoSDKUIKitDemo/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mediquo.MediQuoSDKUIKitDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1A3451152BD2A06D00ED2369 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MediQuoSDKUIKitDemo/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mediquo.MediQuoSDKUIKitDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		F58161B12B8F76DC00D5D345 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -344,6 +490,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1A3451162BD2A06D00ED2369 /* Build configuration list for PBXNativeTarget "MediQuoSDKUIKitDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A3451142BD2A06D00ED2369 /* Debug */,
+				1A3451152BD2A06D00ED2369 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F58161A02B8F76DB00D5D345 /* Build configuration list for PBXProject "MediQuoSDKDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -365,6 +520,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1A3451172BD2AF3900ED2369 /* MediQuoSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MediQuoSDK;
+		};
 		F58161B82B8F772700D5D345 /* MediQuoSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MediQuoSDK;
