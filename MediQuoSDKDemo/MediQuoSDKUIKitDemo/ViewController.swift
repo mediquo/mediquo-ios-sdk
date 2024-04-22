@@ -156,7 +156,7 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
     private func createButton(title: String, action: Selector) -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle(title, for: .normal)
-        button.backgroundColor = UIColor.secondarySystemBackground
+        button.backgroundColor = UIColor.accent
         button.setTitleColor(UIColor.label, for: .normal)
         button.layer.cornerRadius = 10
         button.contentHorizontalAlignment = .center
