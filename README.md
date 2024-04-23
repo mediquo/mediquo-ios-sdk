@@ -52,7 +52,11 @@ After the `MediQuo` object is created, we call `getSDKViewController(for:)` in o
 
 All the possibles views are defined in `MediQuo.ViewKind` and you can use Xcode's autocomplete to find the appropiate view for any use case.
 
-**Note:** You could create one instance of the `MediQuo` object tied to the lifetime of your App, just store it on your AppDelegate or any other way you manage your dependencies. Just make sure that if the user changes, this object gets recreated so the `USER_ID` is updated.
+**Note:** You could create one instance of the `MediQuo` object tied to the lifetime of your App, just store it on your AppDelegate or any other way you manage your dependencies. Just make sure that if the user changes, call this method to deauthenticate the old one.
+
+```swift
+try? await mediquo.deauthenticateSDK()
+```
 
 ## Push Integration
 
