@@ -1,16 +1,7 @@
-//
-//  AppDelegate.swift
-//  MediQuoSDKUIKitDemo
-//
-//  Created by Marc Hidalgo on 19/4/24.
-//
-
 import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         return true
@@ -24,4 +15,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) { }
 }
-

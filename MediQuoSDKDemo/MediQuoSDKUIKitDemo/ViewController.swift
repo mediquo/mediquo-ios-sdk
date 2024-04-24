@@ -1,7 +1,3 @@
-//
-//  Created by Marc Hidalgo on 19/4/24.
-//
-
 import MediQuoSDK
 import UIKit
 import SwiftUI
@@ -13,11 +9,14 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
     private let appointmentTextField = UITextField()
     private let apiKey = "o6o2UmYyQqztIfPV"
     private let userID = "5ddda90f-ee61-4242-b736-1c2e58cb2e16"
-    
-    public init() {
-        super.init(nibName: nil, bundle: nil)
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
         fetchData()
     }
+    
+    //MARK: Private
     
     func fetchData() {
         Task { @MainActor in
@@ -28,18 +27,7 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupUI()
-    }
-    
-    //MARK: Private
-    
     private func setupUI() {
         view = UIView()
         view.backgroundColor = .systemBackground
