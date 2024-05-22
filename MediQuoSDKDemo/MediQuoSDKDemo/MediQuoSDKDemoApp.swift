@@ -161,7 +161,7 @@ struct ContentView: View {
                     ContentView(mediquoSDK: mediQuoSDK)
                 }
             }.task {
-                let mediquoSDK = try! await MediQuo(environment: .production, apiKey: apiKey, userID: userID)
+                let mediquoSDK = try! await MediQuo(apiKey: apiKey, userID: userID)
                 self.state = .loaded(mediquoSDK)
             }
         }

@@ -43,7 +43,7 @@ Whenever you want to present the MediQuo functionality, use the following patter
 
 ```swift
 Task {
-  let mediquo = try await MediQuo(environment: .production, apiKey: API_KEY, userID: USER_ID)
+  let mediquo = try await MediQuo(apiKey: API_KEY, userID: USER_ID)
   let vc = mediquo.getSDKViewController(for: .professionalList)
   self.present(vc, animated: true)
 }

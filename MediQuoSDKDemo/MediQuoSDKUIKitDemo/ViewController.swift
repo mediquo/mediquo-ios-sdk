@@ -21,7 +21,7 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
     func fetchData() {
         Task { @MainActor in
             do {
-                self.mediquoSDK = try await MediQuo(environment: .production, apiKey: apiKey, userID: userID)
+                self.mediquoSDK = try await MediQuo(apiKey: apiKey, userID: userID)
             } catch {
                 showError(message: "Error loading SDK")
             }
