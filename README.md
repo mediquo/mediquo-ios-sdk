@@ -73,3 +73,12 @@ When receiving a push, it is your app's responsability to parse the incoming mes
 ### Customization
 
 The SDK will use your app's [Accent Color](https://developer.apple.com/documentation/xcode/specifying-your-apps-color-scheme) to customize it's look and feel. If you need any more customization points, feel free to open an [Issue](https://github.com/mediquo/mediquo-ios-sdk/issues) in this Repository to request any feature.  
+
+### Troubleshooting
+
+During the SPM integration, in case you're find an issue such as "invalid archive returned from 'https://github.com/mediquo/mediquo-ios-sdk/releases/download/X.X.X/MediQuoSDK.xcframework.zip' which is required by binary target 'XXX'", close Xcode and run the following commands in your Terminal.
+
+```
+rm -rf $HOME/Library/Caches/org.swift.swiftpm/
+rm -rf $HOME/Library/org.swift.swiftpm
+```
