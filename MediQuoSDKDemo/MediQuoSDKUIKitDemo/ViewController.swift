@@ -77,7 +77,11 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
     private func fetchData() {
         Task { @MainActor in
             do {
-                self.mediquoSDK = try await MediQuo(apiKey: apiKey, userID: userID)
+                let mediquoSDK = try await MediQuo(apiKey: apiKey, userID: userID)
+                if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let pushToken = appDelegate.pushToken {
+                    try await mediquoSDK.setPushNotificationToken(pushToken, type: .firebase)
+                }
+                self.mediquoSDK = mediquoSDK
             } catch {
                 showError(message: "Error loading SDK")
             }
