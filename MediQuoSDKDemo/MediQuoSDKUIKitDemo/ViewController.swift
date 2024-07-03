@@ -1,6 +1,11 @@
+
 import MediQuoSDK
 import UIKit
-import SwiftUI
+
+@available(iOS 17, *)
+#Preview {
+    SDKDemoViewController()
+}
 
 class SDKDemoViewController: UIViewController, UITextFieldDelegate {
     
@@ -10,26 +15,10 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
     private let apiKey = "o6o2UmYyQqztIfPV"
     private let userID = "5ddda90f-ee61-4242-b736-1c2e58cb2e16"
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupUI()
-        fetchData()
-    }
-    
-    //MARK: Private
-    
-    func fetchData() {
-        Task { @MainActor in
-            do {
-                self.mediquoSDK = try await MediQuo(apiKey: apiKey, userID: userID)
-            } catch {
-                showError(message: "Error loading SDK")
-            }
-        }
-    }
-
-    private func setupUI() {
-        view = UIView()
+    override func loadView() {
+        let scrollView = UIScrollView()
+        scrollView.alwaysBounceVertical = true
+        view = scrollView
         view.backgroundColor = .systemBackground
 
         let stackView = UIStackView()
@@ -65,80 +54,68 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
         let chatButton = createButton(title: "Show chat", action: #selector(showChat))
         stackView.addArrangedSubview(chatButton)
         
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
+        stackView.layoutMargins = .init(top: 20, left: 20, bottom: 20, right: 20)
+        stackView.isLayoutMarginsRelativeArrangement = true
         view.addSubview(stackView)
-        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            stackView.topAnchor.constraint(equalTo: view.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            stackView.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
     }
     
-    @objc private func showProfessionalList() {
-        guard let mediquoSDK else {
-            showError(message: "Error loading SDK")
-            return
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        fetchData()
+    }
+    
+    //MARK: Private
+    
+    private func fetchData() {
+        Task { @MainActor in
+            do {
+                self.mediquoSDK = try await MediQuo(apiKey: apiKey, userID: userID)
+            } catch {
+                showError(message: "Error loading SDK")
+            }
         }
-        let vc = UIHostingController(rootView: mediquoSDK.getSDKView(for: .professionalList))
-        presentFullScreenViewController(vc)
+    }
+    
+    @objc private func showProfessionalList() {
+        presentFullScreenViewController(.professionalList)
     }
     
     @objc private func showMedicalHistory() {
-        guard let mediquoSDK else {
-            showError(message: "Error loading SDK")
-            return
-        }
-        let vc = UIHostingController(rootView: mediquoSDK.getSDKView(for: .medicalHistory))
-        presentFullScreenViewController(vc)
+        presentFullScreenViewController(.medicalHistory)
     }
     
     @objc private func showVideoCall() {
-        guard let mediquoSDK else {
-            showError(message: "Error loading SDK")
-            return
-        }
         let viewModel = MediQuo.CallViewModel.videoMock
-        let vc = UIHostingController(rootView: mediquoSDK.getSDKView(for: .call(callViewModel: viewModel, closeHandler: {})))
-        presentFullScreenViewController(vc)
+        presentFullScreenViewController(.call(callViewModel: viewModel, closeHandler: {}))
     }
     
     @objc private func showAudioCall() {
-        guard let mediquoSDK else {
-            showError(message: "Error loading SDK")
-            return
-        }
         let viewModel = MediQuo.CallViewModel.audioMock
-        let vc = UIHostingController(rootView: mediquoSDK.getSDKView(for: .call(callViewModel: viewModel, closeHandler: {})))
-        presentFullScreenViewController(vc)
+        presentFullScreenViewController(.call(callViewModel: viewModel, closeHandler: {}))
     }
     
     @objc private func showAppointmentDetails() {
-        guard let mediquoSDK else {
-            showError(message: "Error loading SDK")
-            return
-        }
         guard let appointmentID = appointmentTextField.text, appointmentID != "" else {
             showError(message: "Please provide a valid ID")
             return
         }
-        let vc = UIHostingController(rootView: mediquoSDK.getSDKView(for: .appointmentsDetails(appointmentID: appointmentID, delegate: nil)))
-        presentFullScreenViewController(vc)
+        presentFullScreenViewController(.appointmentsDetails(appointmentID: appointmentID, delegate: nil))
     }
     
     @objc private func showChat() {
-        guard let mediquoSDK else {
-            showError(message: "Error loading SDK")
-            return
-        }
         guard let roomID = Int(roomIDTextField.text ?? "") else {
             showError(message: "Please provide a valid room ID")
             return
         }
-        let vc = UIHostingController(rootView: mediquoSDK.getSDKView(for: .chat(roomID: roomID)))
-        presentFullScreenViewController(vc)
+        presentFullScreenViewController(.chat(roomID: roomID))
     }
     
     private func createButton(title: String, action: Selector) -> UIButton {
@@ -150,6 +127,7 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
         button.contentHorizontalAlignment = .center
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: action, for: .touchUpInside)
+        button.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
         return button
     }
 
@@ -158,14 +136,51 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
         textField.borderStyle = .roundedRect
     }
     
-    private func presentFullScreenViewController(_ viewController: UIViewController) {
-        viewController.modalPresentationStyle = .fullScreen
-        present(viewController, animated: true)
+    private func actionFor(title: String, imageName: String, navigationController: UINavigationController, viewKind: MediQuo.ViewKind) -> UIAction {
+        return UIAction(title: title, image: UIImage(systemName: imageName)) { [weak self, navigationController] (_) in
+            guard let mediquoSDK = self?.mediquoSDK else {
+                return
+            }
+            navigationController.pushViewController(mediquoSDK.getSDKViewController(for: viewKind, embedInNavigationController: false), animated: true)
+        }
+    }
+
+    private func presentFullScreenViewController(_ viewKind: MediQuo.ViewKind) {
+        guard let mediquoSDK else {
+            showError(message: "Error loading SDK")
+            return
+        }
+        let viewController = mediquoSDK.getSDKViewController(for: viewKind, embedInNavigationController: false)
+        let navigationController = UINavigationController(rootViewController: viewController)
+        switch viewKind {
+        case .professionalList:
+            viewController.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: .init(children: [
+                actionFor(title: "Alérgias", imageName: "allergens", navigationController: navigationController, viewKind: .allergies),
+                actionFor(title: "Medicaciones", imageName: "pill", navigationController: navigationController, viewKind: .medication),
+                actionFor(title: "Informes", imageName: "newspaper", navigationController: navigationController, viewKind: .medicalReport),
+                actionFor(title: "Recetas", imageName: "rectangle.and.pencil.and.ellipsis", navigationController: navigationController, viewKind: .prescription),
+            ]))
+        default:
+            break
+        }
+        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: .init(systemName: "xmark"),
+            style: .plain,
+            target: self,
+            action: #selector(dismissMediquoViewController)
+        )
+        navigationController.modalPresentationStyle = .fullScreen
+        present(navigationController, animated: true)
     }
     
     private func showError(message: String) {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
+    }
+    
+    @objc
+    private func dismissMediquoViewController() {
+        dismiss(animated: true, completion: nil)
     }
 }
