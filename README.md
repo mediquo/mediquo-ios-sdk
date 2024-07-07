@@ -62,13 +62,20 @@ try? await mediquo.deauthenticateSDK()
 
 The MediQuo SDK supports Firebase-based pushes as well as regular APNS based ones.
 
-Make sure to override your App Delegate's `application(_:, didRegisterForRemoteNotificationsWithDeviceToken: Data)` and add:
+After you [explicitly request permission](https://developer.apple.com/documentation/usernotifications/asking-permission-to-use-notifications#Explicitly-request-authorization-in-context) to send pushes to the user, make sure to override your App Delegate's `application(_:, didRegisterForRemoteNotificationsWithDeviceToken: Data)` and add:
 
 ```swift
 try? await mediquo.setPushNotificationToken(data, type: .appleAPNS)
 ```
 
 When receiving a push, it is your app's responsability to parse the incoming message, create the MediQuo view and present it in order to allow the end user an opportunity to keep interacting with your app.
+
+## Permissions
+
+The SDK allows the users to send voice notes, images and files, so in order to allow this functionality, you must add the following entries to your `Info.plist` with an appropiate description:
+
+- `NSMicrophoneUsageDescription`
+- `NSCameraUsageDescription`
 
 ### Customization
 
