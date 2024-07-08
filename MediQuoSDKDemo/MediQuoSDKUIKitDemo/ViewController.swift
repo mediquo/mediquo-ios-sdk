@@ -14,6 +14,7 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
     private let appointmentTextField = UITextField()
     private let apiKey = "o6o2UmYyQqztIfPV"
     private let userID = "5ddda90f-ee61-4242-b736-1c2e58cb2e16"
+    private var contentStackView: UIStackView!
 
     override func loadView() {
         let scrollView = UIScrollView()
@@ -65,6 +66,7 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
             stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
+        contentStackView = stackView
     }
     
     override func viewDidLoad() {
@@ -75,6 +77,15 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
     //MARK: Private
     
     private func fetchData() {
+        self.contentStackView.alpha = 0
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(activityIndicator)
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
+        activityIndicator.startAnimating()
         Task { @MainActor in
             do {
                 let mediquoSDK = try await MediQuo(apiKey: apiKey, userID: userID)
@@ -85,6 +96,8 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
             } catch {
                 showError(message: "Error loading SDK")
             }
+            self.contentStackView.alpha = 1
+            activityIndicator.removeFromSuperview()
         }
     }
     
