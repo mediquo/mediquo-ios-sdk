@@ -62,11 +62,24 @@ try? await mediquo.deauthenticateSDK()
 
 The MediQuo SDK supports Firebase-based pushes as well as regular APNS based ones.
 
+<details>
+<summary>Apple APNS</summary>
+
 After you [explicitly request permission](https://developer.apple.com/documentation/usernotifications/asking-permission-to-use-notifications#Explicitly-request-authorization-in-context) to send pushes to the user, make sure to override your App Delegate's `application(_:, didRegisterForRemoteNotificationsWithDeviceToken: Data)` and add:
 
 ```swift
 try? await mediquo.setPushNotificationToken(data, type: .appleAPNS)
 ```
+</details>
+
+<details>
+<summary>Firebase</summary>
+
+First, you must obtain the [token from Firebase](https://firebase.google.com/docs/cloud-messaging/ios/client#fetching-the-current-registration-token) and once obtained (and every time it changes), you must pass it on to the Mediquo's SDK with the following code: 
+
+`try await mediquo.setPushNotificationToken(data, type: .firebase)`
+
+</details>
 
 When receiving a push, it is your app's responsability to parse the incoming message, create the MediQuo view and present it in order to allow the end user an opportunity to keep interacting with your app.
 
