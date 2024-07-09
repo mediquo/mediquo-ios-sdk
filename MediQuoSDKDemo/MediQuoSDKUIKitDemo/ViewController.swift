@@ -12,8 +12,8 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
     private var mediquoSDK: MediQuo?
     private let roomIDTextField = UITextField()
     private let appointmentTextField = UITextField()
-    private let apiKey = "o6o2UmYyQqztIfPV"
-    private let userID = "5ddda90f-ee61-4242-b736-1c2e58cb2e16"
+    private let apiKey = "xuI6zxyDFR0R4oy8"
+    private let userID = "121235435"
     private var contentStackView: UIStackView!
 
     override func loadView() {

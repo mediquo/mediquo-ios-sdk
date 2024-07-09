@@ -142,8 +142,8 @@ struct ContentView: View {
     }
     
     struct Async: View {
-        let userID = "90454859-89d9-4730-8096-4d032ca7ac61"
-        let apiKey = "xuI6zxyDFR0R4oy8"
+        private let apiKey = "xuI6zxyDFR0R4oy8"
+        private let userID = "121235435"
 
         enum LoadingPhase {
             case loading
