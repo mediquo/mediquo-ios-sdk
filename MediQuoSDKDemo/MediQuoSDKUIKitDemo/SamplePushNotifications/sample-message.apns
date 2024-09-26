@@ -1,0 +1,16 @@
+{
+  "aps": {
+    "alert": {
+      "title": "Marc TLB PRO",
+      "body": "You have new unread messages",
+      "sound": "default"
+    }
+  },
+  "data": {
+      "module": "consultations",
+      "room_id": "2152762",
+      "message": "You have new unread messages",
+      "type": "message_created"
+  },
+  "Simulator Target Bundle": "$BUNDLE_ID"
+}

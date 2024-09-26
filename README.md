@@ -85,35 +85,7 @@ try? await mediquo.setPushNotificationToken(type: .firebase(token))
 
 When receiving a push, it is your app's responsability to parse the incoming message, create the MediQuo view and present it in order to allow the end user an opportunity to keep interacting with your app.
 
-Example new message push payload
-
-```swift
-"data": {
-      "module": "consultations",
-      "room_id": "2152762",
-      "message": "You have new unread messages",
-      "type": "message_created"
-  }
-```
-
-Example call push payload:
-
-```swift
-"data": {
-    "module": "consultations",
-    "professional_hash": "e38c51fe-e9e1-4cb0-8331-a6830910ca01",
-    "professional_name": "Marc TLB Pro",
-    "professional_avatar": "https://marqueting.s3.eu-central-1.amazonaws.com/avatars/user_placeholder.png",
-    "call_session_id": "1_MX40NjY1NTEwMn5-MTcwMzY5MTI3NDgzOH4rKzR6dmkyUHJKNzk2a2pmZ0p1M0t4OW1-fn4",
-    "call_token": "T1==cGFydG5lcl9pZD00NjY1NTEwMiZzaWc9OWVjZmNjMTJhYmMzNjdmYTgxZDVmMzM1MjJlMzZjYzRhNWFiOTM2ZjpzZXNzaW9uX2lkPTFfTVg0ME5qWTFOVEV3TW41LU1UY3dNelk1TVRJM05EZ3pPSDRyS3pSNmRta3lVSEpLTnprMmEycG1aMHAxTTB0NE9XMS1mbjQmY3JlYXRlX3RpbWU9MTcwMzY5MTI3NSZyb2xlPXB1Ymxpc2hlciZub25jZT0xNzAzNjkxMjc1LjAzNDMxMDg2NjM4NDA1JmNvbm5lY3Rpb25fZGF0YT04MzNjMzhkYS1hYTg0LTRhNGUtYTk3Ni1mZTRiNmE2ZTFiMDcmaW5pdGlhbF9sYXlvdXRfY2xhc3NfbGlzdD0=",
-    "call_type": "video",
-    "call_room_id": "2152762",
-    "call_uuid": "e8ad9b4b-999f-4da1-a597-7d9b87a12a30",
-    "title": "Incoming call",
-    "image": "https://marqueting.s3.eu-central-1.amazonaws.com/avatars/user_placeholder.png",
-    "type": "call_requested",
-    }
-```
+You can find an example of notification payloads on the MediQuoSDKUIKitDemo.
 
 ## Permissions
 
