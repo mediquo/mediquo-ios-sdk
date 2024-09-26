@@ -85,7 +85,7 @@ try? await mediquo.setPushNotificationToken(type: .firebase(token))
 
 ### Incoming Push Parsing
 
-When receiving a push, it is your app's responsability to parse the incoming message, create the MediQuo view and present it in order to allow the end user an opportunity to keep interacting with your app.
+When receiving a push, it is your app's responsibility to parse the incoming message, create the MediQuo view and present it in order to allow the end user an opportunity to keep interacting with your app.
 
 You can find an example of notification payloads [here](https://github.com/mediquo/mediquo-ios-sdk/blob/main/SamplePushNotifications).
 
