@@ -1,0 +1,26 @@
+{
+  "aps": {
+    "alert": {
+      "title": "Incoming call",
+      "body": "Peter Jackson is calling you",
+      "sound": "default"
+    }
+  },
+  "data": {
+    "module": "consultations",
+    "professional_hash": "e38c51fe-e9e1",
+    "professional_name": "Peter Jackson",
+    "professional_avatar": "https://marqueting.s3.eu-central-1.amazonaws.com/avatars/user_placeholder.png",
+    "call_session_id": "1_MX40NjY1NTEw",
+    "call_token": "T1==cGFydG5lcl9pZD00NjY1NTEw",
+    "call_type": "video",
+    "call_room_id": "2152762",
+    "call_uuid": "e8ad9b4b-999f-",
+    "title": "Incoming call",
+    "image": "https://marqueting.s3.eu-central-1.amazonaws.com/user_placeholder.png",
+    "type": "call_requested",
+    "sound": "ring.caf",
+    "body": "Peter Jackson is calling you"
+  },
+  "Simulator Target Bundle": "$BUNDLE_ID"
+}
