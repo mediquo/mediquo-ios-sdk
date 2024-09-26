@@ -1,14 +1,14 @@
 {
   "aps": {
     "alert": {
-      "title": "Marc TLB PRO",
+      "title": "Peter Jackson",
       "body": "You have new unread messages",
       "sound": "default"
     }
   },
   "data": {
       "module": "consultations",
-      "room_id": "2152762",
+      "room_id": "215245",
       "message": "You have new unread messages",
       "type": "message_created"
   },
