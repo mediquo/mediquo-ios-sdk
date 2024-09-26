@@ -83,11 +83,13 @@ try? await mediquo.setPushNotificationToken(type: .firebase(token))
 
 </details>
 
+### Incoming Push Parsing
+
 When receiving a push, it is your app's responsability to parse the incoming message, create the MediQuo view and present it in order to allow the end user an opportunity to keep interacting with your app.
 
-You can find an example of notification payloads [here](https://github.com/mediquo/mediquo-ios-sdk/blob/main/MediQuoSDKDemo/MediQuoSDKUIKitDemo/SamplePushNotifications/sample-call.apns).
+You can find an example of notification payloads [here](https://github.com/mediquo/mediquo-ios-sdk/blob/main/SamplePushNotifications).
 
-To test with the simulator, [Drag and drop](https://www.avanderlee.com/workflow/testing-push-notifications-ios-simulator/) the APNs file, and remember to replace the correct BUNDLE_ID under ‘Simulator Target Bundle’: ‘$BUNDLE_ID’.
+- To test with the simulator, [Drag and drop](https://www.avanderlee.com/workflow/testing-push-notifications-ios-simulator/) the APNS file, and remember to replace $BUNDLE_ID with your app's Bundle ID.
 
 ## Permissions
 
