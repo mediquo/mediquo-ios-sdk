@@ -134,11 +134,12 @@ struct ContentView: View {
                 }
             }
         }
-        /// Push notification call example
-        /*.task {
-            try? await
-            mediquoSDK.pushNotification(Data(), type: .appleAPNS)
-        }*/
+        /*
+        .task {
+            /// Push notification call example
+            try? await mediquoSDK.setPushNotificationToken(type: .appleAPNS(Data()))
+        }
+         */
     }
     
     struct Async: View {

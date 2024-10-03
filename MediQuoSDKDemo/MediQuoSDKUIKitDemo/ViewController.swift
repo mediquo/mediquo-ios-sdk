@@ -90,7 +90,7 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
             do {
                 let mediquoSDK = try await MediQuo(apiKey: apiKey, userID: userID)
                 if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let pushToken = appDelegate.pushToken {
-                    try await mediquoSDK.setPushNotificationToken(pushToken, type: .firebase)
+                    try await mediquoSDK.setPushNotificationToken(type: .appleAPNS(pushToken))
                 }
                 self.mediquoSDK = mediquoSDK
             } catch {
