@@ -85,7 +85,25 @@ try? await mediquo.setPushNotificationToken(type: .firebase(token))
 
 ### Incoming Push Parsing
 
-When receiving a push, it is your app's responsibility to parse the incoming message, create the MediQuo view and present it in order to allow the end user an opportunity to keep interacting with your app.
+In order to allow the user an opportunity to keep interacting with your app when receiving a push, we offer an affordance API to parse the incoming push payload into a MediQuo view. However, it is your responsibility as the app's owner to call this API and present this view as you see fit.
+
+For example:
+
+```swift
+public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+  let userInfo = notification.request.content.userInfo as? [String: any Sendable]
+  /// Handle pushes from other sources different from Mediquo
+  /// and only call the mediQuoSDK if you haven't handled this push yourself
+  
+  /// Generate a ViewController from the remote push payload
+  let vc = self.mediquoSDK.getSDKViewController(forRemotePush: userInfo)
+  
+  // Present the ViewController returned by the MediQuoSDK however you want.
+  self.rootViewController.present(vc, animated: true)
+  completionHandler()
+}
+```
+
 
 You can find an example of notification payloads [here](https://github.com/mediquo/mediquo-ios-sdk/blob/main/SamplePushNotifications).
 
@@ -104,7 +122,7 @@ The SDK will use your app's [Accent Color](https://developer.apple.com/documenta
 
 ### Troubleshooting
 
-During the SPM integration, in case you're find an issue such as "invalid archive returned from 'https://github.com/mediquo/mediquo-ios-sdk/releases/download/X.X.X/MediQuoSDK.xcframework.zip' which is required by binary target 'XXX'", close Xcode and run the following commands in your Terminal.
+During the SPM integration, in case you find an issue such as "invalid archive returned from 'https://github.com/mediquo/mediquo-ios-sdk/releases/download/X.X.X/MediQuoSDK.xcframework.zip' which is required by binary target 'XXX'", close Xcode and run the following commands in your Terminal.
 
 ```
 rm -rf $HOME/Library/Caches/org.swift.swiftpm/
