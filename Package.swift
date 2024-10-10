@@ -16,8 +16,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "MediQuoSDK",
-            url: "https://github.com/mediquo/mediquo-ios-sdk/releases/download/10.3.1/MediQuoSDK.xcframework.zip",
-            checksum: "414f6dc7a2d8f2d27f9850bba4d73569fd5a61788ff006228677307392155fa8"
+            url: "https://github.com/mediquo/mediquo-ios-sdk/releases/download/10.3.4/MediQuoSDK.xcframework.zip",
+            checksum: "590f64796a7c40d93a2f027ae1c58cde52540b01bd8789b5a72c666e9cf48db7"
         )
     ]
 )
