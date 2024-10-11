@@ -8,7 +8,7 @@ This repository contains a sample app that you can inspect to see how to integra
 
 ## Prerequisites
 
-- Xcode 15 or later
+- Xcode 16 or later
 - iOS 15 Deployment Target
 
 ## Installation
