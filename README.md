@@ -25,7 +25,7 @@ We support installation via Swift Package Manager and as a standalone XCFramewor
 
 - From the [Releases](https://github.com/mediquo/mediquo-ios-sdk/releases) tab of the Repo, choose the latest release, expand Assets and download the ZIP file
 
-<img width="449" alt="image" src="https://github.com/mediquo/mediquo-ios-sdk/assets/869981/2e10584e-fbfe-4e9a-9489-59a04e3000d4">
+<img width="960" alt="image" src="https://github.com/user-attachments/assets/3cec5997-15e2-4a6a-9c01-12ec5c2322c1">
 
 - Drag and Drop it in Xcode, link the framework to your target and make sure that the XCFramework is "Embedded and Signed" into your App target.
 
