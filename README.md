@@ -75,7 +75,7 @@ try? await mediquo.setPushNotificationToken(type: .appleAPNS(data))
 <details>
 <summary>Firebase</summary>
 
-First, you must obtain the [token from Firebase](https://firebase.google.com/docs/cloud-messaging/ios/client#fetching-the-current-registration-token) and once obtained (and every time it changes), you must pass it on to the Mediquo's SDK with the following code: 
+First, you should request the user’s permission in the same way as you would when using Apple’s APNS integration. Then, obtain the[token from Firebase](https://firebase.google.com/docs/cloud-messaging/ios/client#fetching-the-current-registration-token). Once obtained (and whenever it changes), pass it to Mediquo’s SDK using the following code: 
 
 ```swift
 try? await mediquo.setPushNotificationToken(type: .firebase(token))
