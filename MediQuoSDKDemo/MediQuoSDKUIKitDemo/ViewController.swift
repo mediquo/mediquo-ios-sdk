@@ -7,7 +7,7 @@ import UIKit
     SDKDemoViewController()
 }
 
-class SDKDemoViewController: UIViewController, UITextFieldDelegate {
+class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEventDelegate {
     
     private var mediquoSDK: MediQuo?
     private let roomIDTextField = UITextField()
@@ -15,7 +15,8 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
     private let apiKey = "xuI6zxyDFR0R4oy8"
     private let userID = "121235435"
     private var contentStackView: UIStackView!
-
+    private var callVC: UIViewController?
+    
     override func loadView() {
         let scrollView = UIScrollView()
         scrollView.alwaysBounceVertical = true
@@ -74,6 +75,30 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
         fetchData()
     }
     
+    //MARK: MediQuoEventDelegate
+
+    func didChangeSocketStatus(isConnected: Bool, previousIsConnected: Bool) async {
+        /// We could use this callback to notify the
+        /// user that the service is back online
+    }
+    
+    /// Assume only one call happens at a time
+    func didReceiveCall(_ call: MediQuoSDK.MediQuo.CallViewModel) async {
+        guard let windowScene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+              let visibleVC = windowScene.keyWindow?.visibleViewController,
+              let vc = mediquoSDK?.getSDKViewController(for: .call(callViewModel: call)) else {
+            return
+        }
+        vc.modalPresentationStyle = .fullScreen
+        visibleVC.present(vc, animated: true)
+        self.callVC = vc
+    }
+    
+    func didRejectCall(_ call: MediQuoSDK.MediQuo.CallViewModel.ID) async {
+        self.callVC?.dismiss(animated: true)
+        self.callVC = nil
+    }
+
     //MARK: Private
     
     private func fetchData() {
@@ -92,6 +117,7 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
                 if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let pushToken = appDelegate.pushToken {
                     try await mediquoSDK.setPushNotificationToken(type: .appleAPNS(pushToken))
                 }
+                mediquoSDK.eventDelegate = self
                 self.mediquoSDK = mediquoSDK
             } catch {
                 showError(message: "Error loading SDK")
@@ -171,7 +197,7 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
         let navigationController = UINavigationController(rootViewController: viewController)
         switch viewKind {
         case .professionalList:
-            viewController.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: .init(children: [
+            viewController.navigationItem.rightBarButtonItem = .init(image: .init(systemName: "ellipsis"), menu: .init(children: [
                 actionFor(title: "Alérgias", imageName: "allergens", navigationController: navigationController, viewKind: .allergies),
                 actionFor(title: "Medicaciones", imageName: "pill", navigationController: navigationController, viewKind: .medication),
                 actionFor(title: "Informes", imageName: "newspaper", navigationController: navigationController, viewKind: .medicalReport),
@@ -199,5 +225,26 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
     @objc
     private func dismissMediquoViewController() {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+private extension UIWindow {
+
+    var visibleViewController: UIViewController? {
+        return UIWindow.getVisibleViewControllerFrom(self.rootViewController)
+    }
+
+    private static func getVisibleViewControllerFrom(_ vc: UIViewController?) -> UIViewController? {
+        if let nc = vc as? UINavigationController {
+            return UIWindow.getVisibleViewControllerFrom(nc.visibleViewController)
+        } else if let tc = vc as? UITabBarController {
+            return UIWindow.getVisibleViewControllerFrom(tc.selectedViewController)
+        } else {
+            if let pvc = vc?.presentedViewController {
+                return UIWindow.getVisibleViewControllerFrom(pvc)
+            } else {
+                return vc
+            }
+        }
     }
 }

@@ -122,7 +122,7 @@ self.mediquoSDK.eventDelegate = self
 
 You can listen to events like socket connection changes or incoming calls. Please refer to the [Sample App](https://github.com/mediquo/mediquo-ios-sdk/blob/main/MediQuoSDKDemo/MediQuoSDKUIKitDemo/ViewController.swift#L10) code in order to see how to integrate this functionality.
 
-**Note:** If an incoming call is received and `eventDelegate` is nil, `MediQuo` will attempt to present a full screen `UIViewController` to handle that call.
+**Note:** As of version 10.7.1 of the SDK, if an incoming call is received and `eventDelegate` is nil, `MediQuo` will attempt to present a full screen `UIViewController` to handle that call.
 
 ## Permissions
 
