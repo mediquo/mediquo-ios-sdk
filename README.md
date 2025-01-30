@@ -55,11 +55,16 @@ self.present(vc, animated: true)
 
 All the possibles views are defined in `MediQuo.ViewKind` and you can use Xcode's autocomplete to find the appropiate view for any use case.
 
-**Note:** For most apps, we recommend that you create one instance of the `MediQuo` object and tie it to the lifetime of your App. Store it on your `AppDelegate` or any other way you manage your dependencies. Just make sure that if the user logs off, call this method to deauthenticate it.
+**Note:**
+For most applications, we recommend instantiating a single MediQuo object at the start of an entitled user’s session. Store this instance in AppDelegate or within your dependency management system to ensure consistent access throughout the app.
+
+However, if the user logs out, make sure to call this method to deauthenticate and clean up the instance properly:
 
 ```swift
 try? await mediquo.deauthenticateSDK()
 ```
+
+This prevents unauthorized access and ensures a fresh state when a new user logs in.
 
 ## Push Integration
 
@@ -122,7 +127,7 @@ self.mediquoSDK.eventDelegate = self
 
 You can listen to events like socket connection changes or incoming calls. Please refer to the [Sample App](https://github.com/mediquo/mediquo-ios-sdk/blob/main/MediQuoSDKDemo/MediQuoSDKUIKitDemo/ViewController.swift#L10) code in order to see how to integrate this functionality.
 
-**Note:** As of version 10.7.1 of the SDK, if an incoming call is received and `eventDelegate` is nil, `MediQuo` will attempt to present a full screen `UIViewController` to handle that call.
+**Note:** As of version 10.7.1 of the SDK, if an incoming call is received and `eventDelegate` is nil, `MediQuo` will attempt to present a full screen `UIViewController to handle that call.
 
 ## Permissions
 
