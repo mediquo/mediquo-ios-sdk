@@ -56,7 +56,7 @@ self.present(vc, animated: true)
 All the possibles views are defined in `MediQuo.ViewKind` and you can use Xcode's autocomplete to find the appropiate view for any use case.
 
 **Note:**
-For most applications, we recommend instantiating a single MediQuo object at the start of an entitled user’s session. Store this instance in AppDelegate or within your dependency management system to ensure consistent access throughout the app.
+For most applications, we recommend instantiating a single `MediQuo` object at the start of an entitled user’s session. Store this instance in AppDelegate or within your dependency management system to ensure consistent access throughout the app.
 
 However, if the user logs out, make sure to call this method to deauthenticate and clean up the instance properly:
 
@@ -101,10 +101,10 @@ For example:
 public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
   let userInfo = notification.request.content.userInfo as? [String: any Sendable]
   /// Handle pushes from other sources different from Mediquo
-  /// and only call the mediQuoSDK if you haven't handled this push yourself
+  /// and only call the MediQuo SDK if you haven't handled this push yourself
   
   /// Generate a ViewController from the remote push payload
-  let vc = self.mediquoSDK.getSDKViewController(forRemotePush: userInfo)
+  let vc = self.mediquo.getSDKViewController(forRemotePush: userInfo)
   
   // Present the ViewController returned by the MediQuoSDK however you want.
   self.rootViewController.present(vc, animated: true)
@@ -112,14 +112,13 @@ public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceiv
 }
 ```
 
-
 You can find an example of notification payloads [here](https://github.com/mediquo/mediquo-ios-sdk/blob/main/SamplePushNotifications).
 
 - To test with the simulator, [Drag and drop](https://www.avanderlee.com/workflow/testing-push-notifications-ios-simulator/) the APNS file, and remember to replace $BUNDLE_ID with your app's Bundle ID.
 
 ## Listening to Events
 
-In order to listen to events, make sure you comply with `MediQuoEventDelegate` and set an instance of that object as the delegate using:
+In order to listen to events, make sure you conform with the `MediQuoEventDelegate` protocol and set an instance of that object as the delegate using:
 
 ```swift
 self.mediquoSDK.eventDelegate = self
@@ -127,7 +126,7 @@ self.mediquoSDK.eventDelegate = self
 
 You can listen to events like socket connection changes or incoming calls. Please refer to the [Sample App](https://github.com/mediquo/mediquo-ios-sdk/blob/main/MediQuoSDKDemo/MediQuoSDKUIKitDemo/ViewController.swift#L10) code in order to see how to integrate this functionality.
 
-**Note:** As of version 10.7.1 of the SDK, if an incoming call is received and `eventDelegate` is nil, `MediQuo` will attempt to present a full screen `UIViewController to handle that call.
+**Note:** As of version 10.7.1 of the SDK, if an incoming call is received and `eventDelegate` is nil, `MediQuo` will attempt to present a full screen `UIViewController` to handle that call.
 
 ## Permissions
 
