@@ -14,9 +14,10 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
     private let appointmentTextField = UITextField()
     private let apiKey = "xuI6zxyDFR0R4oy8"
     private let userID = "121235435"
-    private var contentStackView: UIStackView!
+    private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
     private var callVC: UIViewController?
-    
+
     override func loadView() {
         let scrollView = UIScrollView()
         scrollView.alwaysBounceVertical = true
@@ -27,35 +28,38 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
         stackView.axis = .vertical
         stackView.spacing = 20
         stackView.distribution = .fillEqually
-        
-        let label = UILabel()
-        label.text = "This is a demo app"
-        stackView.addArrangedSubview(label)
-        
+
+        titleLabel.text = "Loading SDK..."
+        titleLabel.font = UIFont.systemFont(ofSize: 20)
+        stackView.addArrangedSubview(titleLabel)
+
+        subtitleLabel.text = "Socket status: Connecting"
+        stackView.addArrangedSubview(subtitleLabel)
+
         let buttons = [
             ("Show professional list", #selector(showProfessionalList)),
             ("Show medical history", #selector(showMedicalHistory)),
-            ("Show incoming videocall", #selector(showVideoCall)),
-            ("Show incoming audiocall", #selector(showAudioCall)),
+            ("Show incoming video call", #selector(showVideoCall)),
+            ("Show incoming audio call", #selector(showAudioCall)),
         ]
-        
+
         for (title, selector) in buttons {
             let button = createButton(title: title, action: selector)
             stackView.addArrangedSubview(button)
         }
-        
+
         configureTextField(appointmentTextField, placeholder: "Enter Appointment ID")
         stackView.addArrangedSubview(appointmentTextField)
-        
+
         let appointmentDetailsButton = createButton(title: "Show appointment details", action: #selector(showAppointmentDetails))
         stackView.addArrangedSubview(appointmentDetailsButton)
-               
+
         configureTextField(roomIDTextField, placeholder: "Enter Room ID")
         stackView.addArrangedSubview(roomIDTextField)
-        
+
         let chatButton = createButton(title: "Show chat", action: #selector(showChat))
         stackView.addArrangedSubview(chatButton)
-        
+
         stackView.layoutMargins = .init(top: 20, left: 20, bottom: 20, right: 20)
         stackView.isLayoutMarginsRelativeArrangement = true
         view.addSubview(stackView)
@@ -67,7 +71,6 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
             stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
-        contentStackView = stackView
     }
     
     override func viewDidLoad() {
@@ -77,13 +80,16 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
     
     //MARK: MediQuoEventDelegate
 
-    func didChangeSocketStatus(isConnected: Bool, previousIsConnected: Bool) async {
-        /// We could use this callback to notify the
-        /// user that the service is back online
+    func didChangeSocketStatus(isConnected: Bool, previousIsConnected: Bool) {
+        if isConnected {
+            self.subtitleLabel.text = "Socket status: Connected"
+        } else {
+            self.subtitleLabel.text = "Socket status: Connecting"
+        }
     }
     
     /// Assume only one call happens at a time
-    func didReceiveCall(_ call: MediQuoSDK.MediQuo.CallViewModel) async {
+    func didReceiveCall(_ call: MediQuoSDK.MediQuo.CallViewModel) {
         guard let windowScene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
               let visibleVC = windowScene.keyWindow?.visibleViewController,
               let vc = mediquoSDK?.getSDKViewController(for: .call(callViewModel: call)) else {
@@ -94,7 +100,7 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
         self.callVC = vc
     }
     
-    func didRejectCall(_ call: MediQuoSDK.MediQuo.CallViewModel.ID) async {
+    func didRejectCall(_ call: MediQuoSDK.MediQuo.CallViewModel.ID) {
         self.callVC?.dismiss(animated: true)
         self.callVC = nil
     }
@@ -102,28 +108,15 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
     //MARK: Private
     
     private func fetchData() {
-        self.contentStackView.alpha = 0
-        let activityIndicator = UIActivityIndicatorView(style: .large)
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(activityIndicator)
-        NSLayoutConstraint.activate([
-            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        ])
-        activityIndicator.startAnimating()
         Task { @MainActor in
             do {
-                let mediquoSDK = try await MediQuo(apiKey: apiKey, userID: userID)
-                if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let pushToken = appDelegate.pushToken {
-                    try await mediquoSDK.setPushNotificationToken(type: .appleAPNS(pushToken))
-                }
-                mediquoSDK.eventDelegate = self
-                self.mediquoSDK = mediquoSDK
+                self.mediquoSDK = try await MediQuo(apiKey: apiKey, userID: userID)
+                self.mediquoSDK?.eventDelegate = self
+                self.titleLabel.text = "SDK loaded successfully"
             } catch {
+                self.titleLabel.text = "SDK error"
                 showError(message: "Error loading SDK")
             }
-            self.contentStackView.alpha = 1
-            activityIndicator.removeFromSuperview()
         }
     }
     
