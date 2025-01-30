@@ -121,7 +121,7 @@ You can find an example of notification payloads [here](https://github.com/mediq
 In order to listen to events, make sure you conform with the `MediQuoEventDelegate` protocol and set an instance of that object as the delegate using:
 
 ```swift
-self.mediquoSDK.eventDelegate = self
+self.mediquo.eventDelegate = self
 ```
 
 You can listen to events like socket connection changes or incoming calls. Please refer to the [Sample App](https://github.com/mediquo/mediquo-ios-sdk/blob/main/MediQuoSDKDemo/MediQuoSDKUIKitDemo/ViewController.swift#L10) code in order to see how to integrate this functionality.
