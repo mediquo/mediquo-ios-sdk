@@ -35,28 +35,36 @@ We support installation via Swift Package Manager and as a standalone XCFramewor
 
 In order to integrate the SDK, we support both UIKit-based apps (the ones with `AppDelegate` and `SceneDelegate`) and SwiftUI-based apps (the ones with `@main` and `WindowGroup`).
 
-Before you present the SDK make sure you have at hand these two values:
+We recommend initializing the SDK right after an entitled user logs in. Before doing this, make sure you have at hand these two values:
 - `API_KEY`: provided by mediQuo
 - `USER_ID`: created with [Patients API](https://developer.mediquo.com/docs/api/patients/)
 
-Whenever you want to present the MediQuo functionality, use the following pattern:
+You initialize it simply:
 
 ```swift
 Task {
-  let mediquo = try await MediQuo(apiKey: API_KEY, userID: USER_ID)
-  let vc = mediquo.getSDKViewController(for: .professionalList)
-  self.present(vc, animated: true)
+  self.mediquo = try await MediQuo(apiKey: API_KEY, userID: USER_ID)
 }
 ```
 After the `MediQuo` object is created, we call `getSDKViewController(for:)` in order to create a `UIViewController` and add it do the hierarchy as you see fit (in this example, we're presenting this View Controller modally). Equivalent APIs are available for SwiftUI-based apps.
 
+```swift
+let vc = self.mediquo.getSDKViewController(for: .professionalList)
+self.present(vc, animated: true)
+```
+
 All the possibles views are defined in `MediQuo.ViewKind` and you can use Xcode's autocomplete to find the appropiate view for any use case.
 
-**Note:** You could create one instance of the `MediQuo` object tied to the lifetime of your App, just store it on your AppDelegate or any other way you manage your dependencies. Just make sure that if the user changes, call this method to deauthenticate the old one.
+**Note:**
+For most applications, we recommend instantiating a single `MediQuo` object at the start of an entitled user’s session. Store this instance in AppDelegate or within your dependency management system to ensure consistent access throughout the app.
+
+However, if the user logs out, make sure to call this method to deauthenticate and clean up the instance properly:
 
 ```swift
 try? await mediquo.deauthenticateSDK()
 ```
+
+This prevents unauthorized access and ensures a fresh state when a new user logs in.
 
 ## Push Integration
 
@@ -93,10 +101,10 @@ For example:
 public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
   let userInfo = notification.request.content.userInfo as? [String: any Sendable]
   /// Handle pushes from other sources different from Mediquo
-  /// and only call the mediQuoSDK if you haven't handled this push yourself
+  /// and only call the MediQuo SDK if you haven't handled this push yourself
   
   /// Generate a ViewController from the remote push payload
-  let vc = self.mediquoSDK.getSDKViewController(forRemotePush: userInfo)
+  let vc = self.mediquo.getSDKViewController(forRemotePush: userInfo)
   
   // Present the ViewController returned by the MediQuoSDK however you want.
   self.rootViewController.present(vc, animated: true)
@@ -104,10 +112,21 @@ public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceiv
 }
 ```
 
-
 You can find an example of notification payloads [here](https://github.com/mediquo/mediquo-ios-sdk/blob/main/SamplePushNotifications).
 
 - To test with the simulator, [Drag and drop](https://www.avanderlee.com/workflow/testing-push-notifications-ios-simulator/) the APNS file, and remember to replace $BUNDLE_ID with your app's Bundle ID.
+
+## Listening to Events
+
+In order to listen to events, make sure you conform with the `MediQuoEventDelegate` protocol and set an instance of that object as the delegate using:
+
+```swift
+self.mediquoSDK.eventDelegate = self
+```
+
+You can listen to events like socket connection changes or incoming calls. Please refer to the [Sample App](https://github.com/mediquo/mediquo-ios-sdk/blob/main/MediQuoSDKDemo/MediQuoSDKUIKitDemo/ViewController.swift#L10) code in order to see how to integrate this functionality.
+
+**Note:** As of version 10.7.1 of the SDK, if an incoming call is received and `eventDelegate` is nil, `MediQuo` will attempt to present a full screen `UIViewController` to handle that call.
 
 ## Permissions
 

@@ -7,14 +7,16 @@ import UIKit
     SDKDemoViewController()
 }
 
-class SDKDemoViewController: UIViewController, UITextFieldDelegate {
+class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEventDelegate {
     
     private var mediquoSDK: MediQuo?
     private let roomIDTextField = UITextField()
     private let appointmentTextField = UITextField()
     private let apiKey = "xuI6zxyDFR0R4oy8"
     private let userID = "121235435"
-    private var contentStackView: UIStackView!
+    private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
+    private var callVC: UIViewController?
 
     override func loadView() {
         let scrollView = UIScrollView()
@@ -26,35 +28,38 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
         stackView.axis = .vertical
         stackView.spacing = 20
         stackView.distribution = .fillEqually
-        
-        let label = UILabel()
-        label.text = "This is a demo app"
-        stackView.addArrangedSubview(label)
-        
+
+        titleLabel.text = "Loading SDK..."
+        titleLabel.font = UIFont.systemFont(ofSize: 20)
+        stackView.addArrangedSubview(titleLabel)
+
+        subtitleLabel.text = "Socket status: Connecting"
+        stackView.addArrangedSubview(subtitleLabel)
+
         let buttons = [
             ("Show professional list", #selector(showProfessionalList)),
             ("Show medical history", #selector(showMedicalHistory)),
-            ("Show incoming videocall", #selector(showVideoCall)),
-            ("Show incoming audiocall", #selector(showAudioCall)),
+            ("Show incoming video call", #selector(showVideoCall)),
+            ("Show incoming audio call", #selector(showAudioCall)),
         ]
-        
+
         for (title, selector) in buttons {
             let button = createButton(title: title, action: selector)
             stackView.addArrangedSubview(button)
         }
-        
+
         configureTextField(appointmentTextField, placeholder: "Enter Appointment ID")
         stackView.addArrangedSubview(appointmentTextField)
-        
+
         let appointmentDetailsButton = createButton(title: "Show appointment details", action: #selector(showAppointmentDetails))
         stackView.addArrangedSubview(appointmentDetailsButton)
-               
+
         configureTextField(roomIDTextField, placeholder: "Enter Room ID")
         stackView.addArrangedSubview(roomIDTextField)
-        
+
         let chatButton = createButton(title: "Show chat", action: #selector(showChat))
         stackView.addArrangedSubview(chatButton)
-        
+
         stackView.layoutMargins = .init(top: 20, left: 20, bottom: 20, right: 20)
         stackView.isLayoutMarginsRelativeArrangement = true
         view.addSubview(stackView)
@@ -66,7 +71,6 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
             stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
-        contentStackView = stackView
     }
     
     override func viewDidLoad() {
@@ -74,30 +78,45 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
         fetchData()
     }
     
+    //MARK: MediQuoEventDelegate
+
+    func didChangeSocketStatus(isConnected: Bool, previousIsConnected: Bool) {
+        if isConnected {
+            self.subtitleLabel.text = "Socket status: Connected"
+        } else {
+            self.subtitleLabel.text = "Socket status: Connecting"
+        }
+    }
+    
+    /// Assume only one call happens at a time
+    func didReceiveCall(_ call: MediQuoSDK.MediQuo.CallViewModel) {
+        guard let windowScene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+              let visibleVC = windowScene.keyWindow?.visibleViewController,
+              let vc = mediquoSDK?.getSDKViewController(for: .call(callViewModel: call)) else {
+            return
+        }
+        vc.modalPresentationStyle = .fullScreen
+        visibleVC.present(vc, animated: true)
+        self.callVC = vc
+    }
+    
+    func didRejectCall(_ call: MediQuoSDK.MediQuo.CallViewModel.ID) {
+        self.callVC?.dismiss(animated: true)
+        self.callVC = nil
+    }
+
     //MARK: Private
     
     private func fetchData() {
-        self.contentStackView.alpha = 0
-        let activityIndicator = UIActivityIndicatorView(style: .large)
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(activityIndicator)
-        NSLayoutConstraint.activate([
-            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        ])
-        activityIndicator.startAnimating()
         Task { @MainActor in
             do {
-                let mediquoSDK = try await MediQuo(apiKey: apiKey, userID: userID)
-                if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let pushToken = appDelegate.pushToken {
-                    try await mediquoSDK.setPushNotificationToken(type: .appleAPNS(pushToken))
-                }
-                self.mediquoSDK = mediquoSDK
+                self.mediquoSDK = try await MediQuo(apiKey: apiKey, userID: userID)
+                self.mediquoSDK?.eventDelegate = self
+                self.titleLabel.text = "SDK loaded successfully"
             } catch {
+                self.titleLabel.text = "SDK error"
                 showError(message: "Error loading SDK")
             }
-            self.contentStackView.alpha = 1
-            activityIndicator.removeFromSuperview()
         }
     }
     
@@ -171,7 +190,7 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
         let navigationController = UINavigationController(rootViewController: viewController)
         switch viewKind {
         case .professionalList:
-            viewController.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: .init(children: [
+            viewController.navigationItem.rightBarButtonItem = .init(image: .init(systemName: "ellipsis"), menu: .init(children: [
                 actionFor(title: "Alérgias", imageName: "allergens", navigationController: navigationController, viewKind: .allergies),
                 actionFor(title: "Medicaciones", imageName: "pill", navigationController: navigationController, viewKind: .medication),
                 actionFor(title: "Informes", imageName: "newspaper", navigationController: navigationController, viewKind: .medicalReport),
@@ -199,5 +218,26 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate {
     @objc
     private func dismissMediquoViewController() {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+private extension UIWindow {
+
+    var visibleViewController: UIViewController? {
+        return UIWindow.getVisibleViewControllerFrom(self.rootViewController)
+    }
+
+    private static func getVisibleViewControllerFrom(_ vc: UIViewController?) -> UIViewController? {
+        if let nc = vc as? UINavigationController {
+            return UIWindow.getVisibleViewControllerFrom(nc.visibleViewController)
+        } else if let tc = vc as? UITabBarController {
+            return UIWindow.getVisibleViewControllerFrom(tc.selectedViewController)
+        } else {
+            if let pvc = vc?.presentedViewController {
+                return UIWindow.getVisibleViewControllerFrom(pvc)
+            } else {
+                return vc
+            }
+        }
     }
 }
