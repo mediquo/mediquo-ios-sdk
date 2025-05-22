@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "MediQuoSDK",
     platforms: [
-        .iOS(.v15),
+        .iOS(.v16),
     ],
     products: [
         .library(
@@ -16,8 +16,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "MediQuoSDK",
-            url: "https://github.com/mediquo/mediquo-ios-sdk/releases/download/10.7.6/MediQuoSDK.xcframework.zip",
-            checksum: "486e98bf1a6d41a275ddf0e4f1652e5ec90b7357137012e71aa713950fbadb8d"
+            url: "https://github.com/mediquo/mediquo-ios-sdk/releases/download/10.9.1/MediQuoSDK.xcframework.zip",
+            checksum: "937f426fb19a45db79f11d3889274a12577e4cf327600d4a50b9ca170ed2ebc9"
         )
     ]
 )
