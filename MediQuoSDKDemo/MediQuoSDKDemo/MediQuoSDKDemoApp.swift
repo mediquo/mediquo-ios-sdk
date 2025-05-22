@@ -110,26 +110,28 @@ struct ContentView: View {
             .navigationTitle("Demo app")
             .navigationBarTitleDisplayMode(.inline)
             .fullScreenCover(item: $showFullScreenCover) { type in
-                switch type {
-                case .professionalList:
-                    mediquoSDK.getSDKView(for: .professionalList)
-                case .medicalHistory:
-                    mediquoSDK.getSDKView(for: .medicalHistory)
-                case .videoCall:
-                    mediquoSDK.getSDKView(for: .call(callViewModel: .init(id: "", roomID: 0, sessionID: "", tokenID: "", type: .video, professional: .init(id: "0", name: "")), closeHandler: { }))
-                case .audioCall:
-                    mediquoSDK.getSDKView(for: .call(callViewModel: .init(id: "", roomID: 0, sessionID: "", tokenID: "", type: .video, professional: .init(id: "0", name: "")), closeHandler: { }))
-                case .appointmentDetails:
-                    if appointmentID == "" {
-                        SDKErrorView(message: "Please provide a valid ID")
-                    } else {
-                        mediquoSDK.getSDKView(for: .appointmentsDetails(appointmentID: appointmentID, delegate: nil))
-                    }
-                case .chat:
-                    if roomID != "", let id = Int(roomID) {
-                        mediquoSDK.getSDKView(for: .chat(roomID: id))
-                    } else {
-                        SDKErrorView(message: "Please provide a valid room ID")
+                NavigationStack {
+                    switch type {
+                    case .professionalList:
+                        mediquoSDK.sdkView(for: .professionalList)
+                    case .medicalHistory:
+                        mediquoSDK.sdkView(for: .medicalHistory)
+                    case .videoCall:
+                        mediquoSDK.sdkView(for: .call(callViewModel: .init(id: "", roomID: 0, sessionID: "", tokenID: "", type: .video, professional: .init(id: "0", name: "")), closeHandler: { }))
+                    case .audioCall:
+                        mediquoSDK.sdkView(for: .call(callViewModel: .init(id: "", roomID: 0, sessionID: "", tokenID: "", type: .video, professional: .init(id: "0", name: "")), closeHandler: { }))
+                    case .appointmentDetails:
+                        if appointmentID == "" {
+                            SDKErrorView(message: "Please provide a valid ID")
+                        } else {
+                            mediquoSDK.sdkView(for: .appointmentsDetails(appointmentID: appointmentID))
+                        }
+                    case .chat:
+                        if roomID != "", let id = Int(roomID) {
+                            mediquoSDK.sdkView(for: .chat(roomID: id))
+                        } else {
+                            SDKErrorView(message: "Please provide a valid room ID")
+                        }
                     }
                 }
             }
