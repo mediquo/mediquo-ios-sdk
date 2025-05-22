@@ -112,22 +112,22 @@ struct ContentView: View {
             .fullScreenCover(item: $showFullScreenCover) { type in
                 switch type {
                 case .professionalList:
-                    mediquoSDK.getSDKView(for: .professionalList)
+                    professionalListView
                 case .medicalHistory:
-                    mediquoSDK.getSDKView(for: .medicalHistory)
+                    mediquoSDK.sdkView(for: .medicalHistory)
                 case .videoCall:
-                    mediquoSDK.getSDKView(for: .call(callViewModel: .init(id: "", roomID: 0, sessionID: "", tokenID: "", type: .video, professional: .init(id: "0", name: "")), closeHandler: { }))
+                    mediquoSDK.sdkView(for: .call(callViewModel: .init(id: "", roomID: 0, sessionID: "", tokenID: "", type: .video, professional: .init(id: "0", name: "")), closeHandler: { }))
                 case .audioCall:
-                    mediquoSDK.getSDKView(for: .call(callViewModel: .init(id: "", roomID: 0, sessionID: "", tokenID: "", type: .video, professional: .init(id: "0", name: "")), closeHandler: { }))
+                    mediquoSDK.sdkView(for: .call(callViewModel: .init(id: "", roomID: 0, sessionID: "", tokenID: "", type: .video, professional: .init(id: "0", name: "")), closeHandler: { }))
                 case .appointmentDetails:
                     if appointmentID == "" {
                         SDKErrorView(message: "Please provide a valid ID")
                     } else {
-                        mediquoSDK.getSDKView(for: .appointmentsDetails(appointmentID: appointmentID, delegate: nil))
+                        mediquoSDK.sdkView(for: .appointmentsDetails(appointmentID: appointmentID))
                     }
                 case .chat:
                     if roomID != "", let id = Int(roomID) {
-                        mediquoSDK.getSDKView(for: .chat(roomID: id))
+                        mediquoSDK.sdkView(for: .chat(roomID: id))
                     } else {
                         SDKErrorView(message: "Please provide a valid room ID")
                     }
@@ -140,6 +140,30 @@ struct ContentView: View {
             try? await mediquoSDK.setPushNotificationToken(type: .appleAPNS(Data()))
         }
          */
+    }
+    
+    @State var showingZendesk: Bool = false
+    
+    private var professionalListView: some View {
+        mediquoSDK.sdkView(for: .professionalList)
+            .safeAreaInset(edge: .bottom, alignment: .trailing) {
+                Button {
+                    showingZendesk = true
+                } label: {
+                    HStack {
+                        Text("Open Zendesk")
+                            .font(.footnote)
+                            .fontWeight(.semibold)
+                    }
+                    .foregroundStyle(Color.white)
+                    .padding(12)
+                }
+                .background(.orange)
+                .padding(12)
+            }
+            .sheet(isPresented: $showingZendesk) {
+                Color.red
+            }
     }
     
     struct Async: View {
