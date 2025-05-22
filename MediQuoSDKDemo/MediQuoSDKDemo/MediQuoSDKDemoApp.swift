@@ -110,28 +110,26 @@ struct ContentView: View {
             .navigationTitle("Demo app")
             .navigationBarTitleDisplayMode(.inline)
             .fullScreenCover(item: $showFullScreenCover) { type in
-                NavigationStack {
-                    switch type {
-                    case .professionalList:
-                        mediquoSDK.sdkView(for: .professionalList)
-                    case .medicalHistory:
-                        mediquoSDK.sdkView(for: .medicalHistory)
-                    case .videoCall:
-                        mediquoSDK.sdkView(for: .call(callViewModel: .init(id: "", roomID: 0, sessionID: "", tokenID: "", type: .video, professional: .init(id: "0", name: "")), closeHandler: { }))
-                    case .audioCall:
-                        mediquoSDK.sdkView(for: .call(callViewModel: .init(id: "", roomID: 0, sessionID: "", tokenID: "", type: .video, professional: .init(id: "0", name: "")), closeHandler: { }))
-                    case .appointmentDetails:
-                        if appointmentID == "" {
-                            SDKErrorView(message: "Please provide a valid ID")
-                        } else {
-                            mediquoSDK.sdkView(for: .appointmentsDetails(appointmentID: appointmentID))
-                        }
-                    case .chat:
-                        if roomID != "", let id = Int(roomID) {
-                            mediquoSDK.sdkView(for: .chat(roomID: id))
-                        } else {
-                            SDKErrorView(message: "Please provide a valid room ID")
-                        }
+                switch type {
+                case .professionalList:
+                    professionalListView
+                case .medicalHistory:
+                    mediquoSDK.sdkView(for: .medicalHistory)
+                case .videoCall:
+                    mediquoSDK.sdkView(for: .call(callViewModel: .init(id: "", roomID: 0, sessionID: "", tokenID: "", type: .video, professional: .init(id: "0", name: "")), closeHandler: { }))
+                case .audioCall:
+                    mediquoSDK.sdkView(for: .call(callViewModel: .init(id: "", roomID: 0, sessionID: "", tokenID: "", type: .video, professional: .init(id: "0", name: "")), closeHandler: { }))
+                case .appointmentDetails:
+                    if appointmentID == "" {
+                        SDKErrorView(message: "Please provide a valid ID")
+                    } else {
+                        mediquoSDK.sdkView(for: .appointmentsDetails(appointmentID: appointmentID))
+                    }
+                case .chat:
+                    if roomID != "", let id = Int(roomID) {
+                        mediquoSDK.sdkView(for: .chat(roomID: id))
+                    } else {
+                        SDKErrorView(message: "Please provide a valid room ID")
                     }
                 }
             }
@@ -142,6 +140,30 @@ struct ContentView: View {
             try? await mediquoSDK.setPushNotificationToken(type: .appleAPNS(Data()))
         }
          */
+    }
+    
+    @State var showingZendesk: Bool = false
+    
+    private var professionalListView: some View {
+        mediquoSDK.sdkView(for: .professionalList)
+            .safeAreaInset(edge: .bottom, alignment: .trailing) {
+                Button {
+                    showingZendesk = true
+                } label: {
+                    HStack {
+                        Text("Open Zendesk")
+                            .font(.footnote)
+                            .fontWeight(.semibold)
+                    }
+                    .foregroundStyle(Color.white)
+                    .padding(12)
+                }
+                .background(.orange)
+                .padding(12)
+            }
+            .sheet(isPresented: $showingZendesk) {
+                Color.red
+            }
     }
     
     struct Async: View {
