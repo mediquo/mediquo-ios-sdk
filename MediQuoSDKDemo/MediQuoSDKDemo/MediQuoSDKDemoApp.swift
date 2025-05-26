@@ -145,25 +145,20 @@ struct ContentView: View {
     @State var showingZendesk: Bool = false
     
     private var professionalListView: some View {
-        mediquoSDK.sdkView(for: .professionalList)
-            .safeAreaInset(edge: .bottom, alignment: .trailing) {
-                Button {
-                    showingZendesk = true
-                } label: {
-                    HStack {
-                        Text("Open Zendesk")
-                            .font(.footnote)
-                            .fontWeight(.semibold)
+        mediquoSDK.sdkView(
+            for: .professionalList(
+                supportButton: .init(
+                    title: "Support",
+                    image: Image(systemName: "questionmark.circle"),
+                    onTap: {
+                        showingZendesk = true
                     }
-                    .foregroundStyle(Color.white)
-                    .padding(12)
-                }
-                .background(.orange)
-                .padding(12)
-            }
-            .sheet(isPresented: $showingZendesk) {
-                Color.red
-            }
+                )
+            )
+        )
+        .sheet(isPresented: $showingZendesk) {
+            Color.red
+        }
     }
     
     struct Async: View {

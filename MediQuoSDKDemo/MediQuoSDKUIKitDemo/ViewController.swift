@@ -14,10 +14,11 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
     private let appointmentTextField = UITextField()
     private let apiKey = "xuI6zxyDFR0R4oy8"
     private let userID = "121235435"
+    private var callVC: UIViewController?
+    
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
-    private var callVC: UIViewController?
-
+    
     override func loadView() {
         let scrollView = UIScrollView()
         scrollView.alwaysBounceVertical = true
@@ -81,11 +82,7 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
     //MARK: MediQuoEventDelegate
 
     func didChangeSocketStatus(isConnected: Bool, previousIsConnected: Bool) {
-        if isConnected {
-            self.subtitleLabel.text = "Socket status: Connected"
-        } else {
-            self.subtitleLabel.text = "Socket status: Connecting"
-        }
+        self.subtitleLabel.text = "Socket status: \(isConnected ? "Connected" : "Connecting")"
     }
     
     /// Assume only one call happens at a time
@@ -122,7 +119,16 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
     }
     
     @objc private func showProfessionalList() {
-        presentFullScreenViewController(.professionalList)
+        presentFullScreenViewController(
+            .professionalList(
+                supportButton: .init(
+                    title: "Support",
+                    image: .init(systemName: "questionmark.circle"),
+                    onTap: {
+                        
+                    })
+            )
+        )
     }
     
     @objc private func showMedicalHistory() {
@@ -131,12 +137,16 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
     
     @objc private func showVideoCall() {
         let viewModel = MediQuo.CallViewModel.videoMock
-        presentFullScreenViewController(.call(callViewModel: viewModel, closeHandler: {}))
+        presentFullScreenViewController(.call(callViewModel: viewModel, closeHandler: {
+            self.dismiss(animated: true)
+        }))
     }
     
     @objc private func showAudioCall() {
         let viewModel = MediQuo.CallViewModel.audioMock
-        presentFullScreenViewController(.call(callViewModel: viewModel, closeHandler: {}))
+        presentFullScreenViewController(.call(callViewModel: viewModel, closeHandler: {
+            self.dismiss(animated: true)
+        }))
     }
     
     @objc private func showAppointmentDetails() {
@@ -178,15 +188,11 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
             showError(message: "Error loading SDK")
             return
         }
-        let viewController = mediquoSDK.sdkViewController(for: viewKind)
-        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: .init(systemName: "xmark"),
-            style: .plain,
-            target: self,
-            action: #selector(dismissMediquoViewController)
+        let navigationController = mediquoSDK.sdkViewController(
+            for: viewKind
         )
-        viewController.modalPresentationStyle = .fullScreen
-        present(viewController, animated: true)
+        navigationController.modalPresentationStyle = .fullScreen
+        present(navigationController, animated: true)
     }
     
     private func showError(message: String) {
