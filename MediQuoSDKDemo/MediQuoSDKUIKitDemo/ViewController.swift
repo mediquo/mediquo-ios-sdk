@@ -14,10 +14,11 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
     private let appointmentTextField = UITextField()
     private let apiKey = "xuI6zxyDFR0R4oy8"
     private let userID = "121235435"
+    private var callVC: UIViewController?
+    
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
-    private var callVC: UIViewController?
-
+    
     override func loadView() {
         let scrollView = UIScrollView()
         scrollView.alwaysBounceVertical = true
@@ -81,23 +82,20 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
     //MARK: MediQuoEventDelegate
 
     func didChangeSocketStatus(isConnected: Bool, previousIsConnected: Bool) {
-        if isConnected {
-            self.subtitleLabel.text = "Socket status: Connected"
-        } else {
-            self.subtitleLabel.text = "Socket status: Connecting"
-        }
+        self.subtitleLabel.text = "Socket status: \(isConnected ? "Connected" : "Connecting")"
     }
     
     /// Assume only one call happens at a time
     func didReceiveCall(_ call: MediQuoSDK.MediQuo.CallViewModel) {
         guard let windowScene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
               let visibleVC = windowScene.keyWindow?.visibleViewController,
-              let vc = mediquoSDK?.getSDKViewController(for: .call(callViewModel: call)) else {
+              let vc = mediquoSDK?.sdkViewController(for: .call(callViewModel: call)) else {
             return
         }
-        vc.modalPresentationStyle = .fullScreen
-        visibleVC.present(vc, animated: true)
-        self.callVC = vc
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        visibleVC.present(navVC, animated: true)
+        self.callVC = navVC
     }
     
     func didRejectCall(_ call: MediQuoSDK.MediQuo.CallViewModel.ID) {
@@ -121,7 +119,16 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
     }
     
     @objc private func showProfessionalList() {
-        presentFullScreenViewController(.professionalList)
+        presentFullScreenViewController(
+            .professionalList(
+                supportButton: .init(
+                    title: "Support",
+                    image: .init(systemName: "questionmark.circle"),
+                    onTap: {
+                        
+                    })
+            )
+        )
     }
     
     @objc private func showMedicalHistory() {
@@ -130,12 +137,16 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
     
     @objc private func showVideoCall() {
         let viewModel = MediQuo.CallViewModel.videoMock
-        presentFullScreenViewController(.call(callViewModel: viewModel, closeHandler: {}))
+        presentFullScreenViewController(.call(callViewModel: viewModel, closeHandler: {
+            self.dismiss(animated: true)
+        }))
     }
     
     @objc private func showAudioCall() {
         let viewModel = MediQuo.CallViewModel.audioMock
-        presentFullScreenViewController(.call(callViewModel: viewModel, closeHandler: {}))
+        presentFullScreenViewController(.call(callViewModel: viewModel, closeHandler: {
+            self.dismiss(animated: true)
+        }))
     }
     
     @objc private func showAppointmentDetails() {
@@ -143,7 +154,7 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
             showError(message: "Please provide a valid ID")
             return
         }
-        presentFullScreenViewController(.appointmentsDetails(appointmentID: appointmentID, delegate: nil))
+        presentFullScreenViewController(.appointmentsDetails(appointmentID: appointmentID))
     }
     
     @objc private func showChat() {
@@ -172,38 +183,13 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
         textField.borderStyle = .roundedRect
     }
     
-    private func actionFor(title: String, imageName: String, navigationController: UINavigationController, viewKind: MediQuo.ViewKind) -> UIAction {
-        return UIAction(title: title, image: UIImage(systemName: imageName)) { [weak self, navigationController] (_) in
-            guard let mediquoSDK = self?.mediquoSDK else {
-                return
-            }
-            navigationController.pushViewController(mediquoSDK.getSDKViewController(for: viewKind, embedInNavigationController: false), animated: true)
-        }
-    }
-
     private func presentFullScreenViewController(_ viewKind: MediQuo.ViewKind) {
         guard let mediquoSDK else {
             showError(message: "Error loading SDK")
             return
         }
-        let viewController = mediquoSDK.getSDKViewController(for: viewKind, embedInNavigationController: false)
-        let navigationController = UINavigationController(rootViewController: viewController)
-        switch viewKind {
-        case .professionalList:
-            viewController.navigationItem.rightBarButtonItem = .init(image: .init(systemName: "ellipsis"), menu: .init(children: [
-                actionFor(title: "Alérgias", imageName: "allergens", navigationController: navigationController, viewKind: .allergies),
-                actionFor(title: "Medicaciones", imageName: "pill", navigationController: navigationController, viewKind: .medication),
-                actionFor(title: "Informes", imageName: "newspaper", navigationController: navigationController, viewKind: .medicalReport),
-                actionFor(title: "Recetas", imageName: "rectangle.and.pencil.and.ellipsis", navigationController: navigationController, viewKind: .prescription),
-            ]))
-        default:
-            break
-        }
-        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: .init(systemName: "xmark"),
-            style: .plain,
-            target: self,
-            action: #selector(dismissMediquoViewController)
+        let navigationController = mediquoSDK.sdkViewController(
+            for: viewKind
         )
         navigationController.modalPresentationStyle = .fullScreen
         present(navigationController, animated: true)
