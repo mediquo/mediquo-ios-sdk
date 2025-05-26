@@ -46,10 +46,10 @@ Task {
   self.mediquo = try await MediQuo(apiKey: API_KEY, userID: USER_ID)
 }
 ```
-After the `MediQuo` object is created, we call `getSDKViewController(for:)` in order to create a `UIViewController` and add it do the hierarchy as you see fit (in this example, we're presenting this View Controller modally). Equivalent APIs are available for SwiftUI-based apps.
+After the `MediQuo` object is created, we call `sdkViewController(for:)` in order to create a `UIViewController` and add it do the hierarchy as you see fit (in this example, we're presenting this View Controller modally). Equivalent APIs are available for SwiftUI-based apps.
 
 ```swift
-let vc = self.mediquo.getSDKViewController(for: .professionalList)
+let vc = self.mediquo.sdkViewController(for: .professionalList)
 self.present(vc, animated: true)
 ```
 
