@@ -6,8 +6,8 @@ This repository contains a sample app that you can inspect to see how to integra
 
 ## Prerequisites
 
-- Xcode 16 or later
-- iOS 16 Deployment Target
+- Xcode 26 or later
+- iOS 17 Deployment Target
 
 ## Installation
 
