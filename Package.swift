@@ -20,8 +20,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "MediQuoSDK",
-            url: "https://github.com/mediquo/mediquo-ios-sdk/releases/download/26.10.2/MediQuoSDK.xcframework.zip",
-            checksum: "0e3a01cffa5b296ba38177b8272e4466f491a5f58b090955d23be34c48c08536"
+            url: "https://github.com/mediquo/mediquo-ios-sdk/releases/download/26.10.3/MediQuoSDK.xcframework.zip",
+            checksum: "1840101059070b138f0ececcf06b6fe111a09cd7d30492cbb805e41f44c41223"
         ),
         // Binary targets cannot declare dependencies. This source target makes
         // SwiftPM embed the dynamic framework required by MediQuoSDK.
