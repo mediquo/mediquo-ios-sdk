@@ -22,6 +22,9 @@ which supplies the dynamic `OpenTokTransformers.framework` required at launch.
 Swift Package Manager embeds this framework and copies its resource bundle
 automatically. Keep this dependency aligned with the version used to build the SDK.
 
+When installing `MediQuoSDK` through Swift Package Manager, you do not need to
+add Vonage Transformers separately to your app or its `Package.swift`.
+
 <img width="1000" alt="image" src="https://github.com/mediquo/mediquo-ios-sdk/assets/869981/25a5cec8-f98d-483b-87d8-f08db2bd6cea">
 
 ### XCFramework
@@ -42,6 +45,10 @@ adding `MediQuoSDK.xcframework` alone causes a `Library not loaded:
 <img width="632" alt="image" src="https://github.com/mediquo/mediquo-ios-sdk/assets/869981/3a6c40d3-f5db-426e-94dc-db23a79d6afe">
 
 ## Integration
+
+See the [SwiftUI demo](MediQuoSDKDemo/MediQuoSDKDemo/MediQuoSDKDemoApp.swift)
+and [UIKit demo](MediQuoSDKDemo/MediQuoSDKUIKitDemo/ViewController.swift) in
+[MediQuoSDKDemo](MediQuoSDKDemo) for integration examples.
 
 In order to integrate the SDK, we support both UIKit-based apps (the ones with `AppDelegate` and `SceneDelegate`) and SwiftUI-based apps (the ones with `@main` and `WindowGroup`).
 
