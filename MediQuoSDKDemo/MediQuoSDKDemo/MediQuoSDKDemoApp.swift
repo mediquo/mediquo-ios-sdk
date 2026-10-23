@@ -37,9 +37,12 @@ struct ContentView: View {
 
     enum FullScreenCoverType: Identifiable {
         case professionalList
+        case schedule
+        case newAppointment
+        case immediateConsultations
+        case documentation
         case medicalHistory
         case videoCall
-        case audioCall
         case chat
         case appointmentDetails
         
@@ -50,61 +53,82 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 30) {
-                Text("This is a demo app")
-                Spacer()
-                Button {
-                    self.showFullScreenCover = .professionalList
-                } label: {
-                    Text("Show professional list")
-                        .frame(maxWidth: .infinity)
-                }
-                
-                Button {
-                    self.showFullScreenCover = .medicalHistory
-                } label: {
-                    Text("Show medical history")
-                        .frame(maxWidth: .infinity)
-                }
-                
-                Button {
-                    self.showFullScreenCover = .videoCall
-                } label: {
-                    Text("Show incoming videocall")
-                        .frame(maxWidth: .infinity)
-                }
-                
-                Button {
-                    self.showFullScreenCover = .audioCall
-                } label: {
-                    Text("Show incoming audiocall")
-                        .frame(maxWidth: .infinity)
-                }
-                
-                VStack {
-                    TextField("Appointment ID", text: $appointmentID)
-                        .textFieldStyle(.roundedBorder)
+            ScrollView {
+                VStack(spacing: 30) {
+                    Text("This is a demo app")
                     Button {
-                        self.showFullScreenCover = .appointmentDetails
+                        self.showFullScreenCover = .professionalList
                     } label: {
-                        Text("Show appointment details")
+                        Text("Show professional list")
                             .frame(maxWidth: .infinity)
                     }
-                    
-                }
-                VStack {
-                    TextField("Room ID", text: $roomID)
-                        .textFieldStyle(.roundedBorder)
+
                     Button {
-                        self.showFullScreenCover = .chat
+                        self.showFullScreenCover = .schedule
                     } label: {
-                        Text("Show chat")
+                        Text("Show agenda")
                             .frame(maxWidth: .infinity)
                     }
+
+                    Button {
+                        self.showFullScreenCover = .newAppointment
+                    } label: {
+                        Text("Show New Consultation")
+                            .frame(maxWidth: .infinity)
+                    }
+
+                    Button {
+                        self.showFullScreenCover = .immediateConsultations
+                    } label: {
+                        Text("Show Immediate Consultation")
+                            .frame(maxWidth: .infinity)
+                    }
+
+                    Button {
+                        self.showFullScreenCover = .documentation
+                    } label: {
+                        Text("Show documentation")
+                            .frame(maxWidth: .infinity)
+                    }
+
+                    Button {
+                        self.showFullScreenCover = .medicalHistory
+                    } label: {
+                        Text("Show medical history")
+                            .frame(maxWidth: .infinity)
+                    }
+
+                    Button {
+                        self.showFullScreenCover = .videoCall
+                    } label: {
+                        Text("Show incoming videocall")
+                            .frame(maxWidth: .infinity)
+                    }
+
+                    VStack {
+                        TextField("Appointment ID", text: $appointmentID)
+                            .textFieldStyle(.roundedBorder)
+                        Button {
+                            self.showFullScreenCover = .appointmentDetails
+                        } label: {
+                            Text("Show appointment details")
+                                .frame(maxWidth: .infinity)
+                        }
+
+                    }
+                    VStack {
+                        TextField("Room ID", text: $roomID)
+                            .textFieldStyle(.roundedBorder)
+                        Button {
+                            self.showFullScreenCover = .chat
+                        } label: {
+                            Text("Show chat")
+                                .frame(maxWidth: .infinity)
+                        }
+                    }
                 }
-                Spacer()
+                .padding(40)
             }
-            .padding(40)
             .font(.title3)
             .buttonStyle(.borderedProminent)
             .navigationTitle("Demo app")
@@ -113,11 +137,17 @@ struct ContentView: View {
                 switch type {
                 case .professionalList:
                     professionalListView
+                case .schedule:
+                    mediquoSDK.sdkView(for: .schedule)
+                case .newAppointment:
+                    mediquoSDK.sdkView(for: .newAppointment)
+                case .immediateConsultations:
+                    mediquoSDK.sdkView(for: .immediateConsultations)
+                case .documentation:
+                    mediquoSDK.sdkView(for: .documentation)
                 case .medicalHistory:
                     mediquoSDK.sdkView(for: .medicalHistory)
                 case .videoCall:
-                    mediquoSDK.sdkView(for: .call(callViewModel: .init(id: "", roomID: 0, sessionID: "", tokenID: "", type: .video, professional: .init(id: "0", name: "")), closeHandler: { }))
-                case .audioCall:
                     mediquoSDK.sdkView(for: .call(callViewModel: .init(id: "", roomID: 0, sessionID: "", tokenID: "", type: .video, professional: .init(id: "0", name: "")), closeHandler: { }))
                 case .appointmentDetails:
                     if appointmentID == "" {

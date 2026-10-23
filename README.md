@@ -65,6 +65,19 @@ self.present(vc, animated: true)
 
 All the possibles views are defined in `MediQuo.ViewKind` and you can use Xcode's autocomplete to find the appropiate view for any use case.
 
+The SwiftUI and UIKit demos include the same consultation and documentation
+entry points as the Android SDK demo. Each button opens the SDK view full screen:
+
+| Demo button | `MediQuo.ViewKind` |
+| --- | --- |
+| Show agenda | `.schedule` |
+| Show New Consultation | `.newAppointment` |
+| Show Immediate Consultation | `.immediateConsultations` |
+| Show documentation | `.documentation` |
+
+These views use the authenticated patient's data and the services enabled for
+their account. The demo menus scroll to keep all entry points accessible.
+
 **Note:**
 For most applications, we recommend instantiating a single `MediQuo` object at the start of an entitled user’s session. Store this instance in AppDelegate or within your dependency management system to ensure consistent access throughout the app.
 
