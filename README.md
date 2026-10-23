@@ -70,20 +70,41 @@ let vc = self.mediquo.sdkViewController(for: .professionalList)
 self.present(vc, animated: true)
 ```
 
-All the possibles views are defined in `MediQuo.ViewKind` and you can use Xcode's autocomplete to find the appropiate view for any use case.
+### Available views
 
-The SwiftUI and UIKit demos include the same consultation and documentation
-entry points as the Android SDK demo. Each button opens the SDK view full screen:
+All SDK screens are defined in `MediQuo.ViewKind`. Pass any of the following
+values to `sdkView(for:)` for SwiftUI or `sdkViewController(for:)` for UIKit.
+The views use the authenticated patient's data and the services enabled for
+their account.
 
-| Demo button | `MediQuo.ViewKind` |
-| --- | --- |
-| Show agenda | `.schedule` |
-| Show New Consultation | `.newAppointment` |
-| Show Immediate Consultation | `.immediateConsultations` |
-| Show documentation | `.documentation` |
+| `MediQuo.ViewKind` | Screen | Parameters |
+| --- | --- | --- |
+| `.professionalList()` | List of healthcare professionals and conversations. | Optional `supportButton: MediQuo.ViewKind.SupportButtonConfiguration`, defaults to `nil`. |
+| `.schedule` | Agenda with upcoming and past appointments. | None. |
+| `.newAppointment` | Consultation booking flow, starting with specialist search. | None. |
+| `.immediateConsultations` | Available immediate consultations, continuing to payment or the waiting room. | None. |
+| `.appointmentsDetails(appointmentID:)` | Details of an existing appointment. | Required `appointmentID: String`. |
+| `.chat(roomID:)` | An existing chat with a professional. | Required `roomID: Int`, also supplied in chat push notification payloads. |
+| `.medicalHistory` | Medical history overview. | None. |
+| `.allergies` | Allergies. | None. |
+| `.diseases` | Diseases. | None. |
+| `.medicalReport` | Medical reports. | None. |
+| `.medication` | Medication list. | None. |
+| `.prescription` | Prescriptions. | None. |
+| `.documentation` | Downloadable documents. | None. |
+| `.call(callViewModel:closeHandler:)` | Incoming video call screen. | Required `callViewModel: MediQuo.CallViewModel`; optional `closeHandler`, defaults to `nil`. |
 
-These views use the authenticated patient's data and the services enabled for
-their account. The demo menus scroll to keep all entry points accessible.
+To add a support button to `.professionalList(supportButton:)`, provide a
+`MediQuo.ViewKind.SupportButtonConfiguration` with a `title` and an `onTap`
+callback. Its `image` is optional and its `backgroundColor` defaults to
+`.accentColor`.
+
+For `.call`, use the `MediQuo.CallViewModel` supplied by
+[`MediQuoEventDelegate.didReceiveCall(_:)`](#listening-to-events), or construct
+one from the incoming call payload. Use the optional `closeHandler` to clear
+your app's call presentation state. This entry point presents an existing
+incoming call; to start a consultation flow, use `.newAppointment` or
+`.immediateConsultations`.
 
 **Note:**
 For most applications, we recommend instantiating a single `MediQuo` object at the start of an entitled user’s session. Store this instance in AppDelegate or within your dependency management system to ensure consistent access throughout the app.
