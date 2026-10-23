@@ -1,0 +1,15 @@
+{
+  "originHash" : "cda3b3252901b2458305dc15b6885b51216cb8c1b4c017a978f8fdd0d454de96",
+  "pins" : [
+    {
+      "identity" : "vonage-client-sdk-video-transformers",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Vonage/vonage-client-sdk-video-transformers.git",
+      "state" : {
+        "revision" : "a66115f8d947225710eb80cf25bd9dd06c5ba02e",
+        "version" : "2.33.0"
+      }
+    }
+  ],
+  "version" : 3
+}
