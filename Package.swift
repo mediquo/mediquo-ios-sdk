@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.1
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -16,8 +16,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "MediQuoSDK",
-            url: "https://github.com/mediquo/mediquo-ios-sdk/releases/download/26.1.2/MediQuoSDK.xcframework.zip",
-            checksum: "c998ca327e181ab488563e6f0cecf2eca83b62eba35044e03d4e5c750c3710f6"
+            url: "https://github.com/mediquo/mediquo-ios-sdk/releases/download/26.10.2/MediQuoSDK.xcframework.zip",
+            checksum: "0e3a01cffa5b296ba38177b8272e4466f491a5f58b090955d23be34c48c08536"
         )
     ]
 )
