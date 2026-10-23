@@ -39,9 +39,12 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
 
         let buttons = [
             ("Show professional list", #selector(showProfessionalList)),
+            ("Show agenda", #selector(showSchedule)),
+            ("Show New Consultation", #selector(showNewAppointment)),
+            ("Show Immediate Consultation", #selector(showImmediateConsultations)),
+            ("Show documentation", #selector(showDocumentation)),
             ("Show medical history", #selector(showMedicalHistory)),
             ("Show incoming video call", #selector(showVideoCall)),
-            ("Show incoming audio call", #selector(showAudioCall)),
         ]
 
         for (title, selector) in buttons {
@@ -131,19 +134,28 @@ class SDKDemoViewController: UIViewController, UITextFieldDelegate, MediQuoEvent
         )
     }
     
+    @objc private func showSchedule() {
+        presentFullScreenViewController(.schedule)
+    }
+
+    @objc private func showNewAppointment() {
+        presentFullScreenViewController(.newAppointment)
+    }
+
+    @objc private func showImmediateConsultations() {
+        presentFullScreenViewController(.immediateConsultations)
+    }
+
+    @objc private func showDocumentation() {
+        presentFullScreenViewController(.documentation)
+    }
+
     @objc private func showMedicalHistory() {
         presentFullScreenViewController(.medicalHistory)
     }
     
     @objc private func showVideoCall() {
         let viewModel = MediQuo.CallViewModel.videoMock
-        presentFullScreenViewController(.call(callViewModel: viewModel, closeHandler: {
-            self.dismiss(animated: true)
-        }))
-    }
-    
-    @objc private func showAudioCall() {
-        let viewModel = MediQuo.CallViewModel.audioMock
         presentFullScreenViewController(.call(callViewModel: viewModel, closeHandler: {
             self.dismiss(animated: true)
         }))

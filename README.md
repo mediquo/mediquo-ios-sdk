@@ -17,9 +17,24 @@ We support installation via Swift Package Manager and as a standalone XCFramewor
 
 - Go to your Xcode Project and add the package `https://github.com/mediquo/mediquo-ios-sdk.git` and add the Package to your app.
 
+The `MediQuoSDK` product also includes Vonage Video Transformers 2.33.0,
+which supplies the dynamic `OpenTokTransformers.framework` required at launch.
+Swift Package Manager embeds this framework and copies its resource bundle
+automatically. Keep this dependency aligned with the version used to build the SDK.
+
+When installing `MediQuoSDK` through Swift Package Manager, you do not need to
+add Vonage Transformers separately to your app or its `Package.swift`.
+
 <img width="1000" alt="image" src="https://github.com/mediquo/mediquo-ios-sdk/assets/869981/25a5cec8-f98d-483b-87d8-f08db2bd6cea">
 
 ### XCFramework
+
+Manual integrations must also add the Swift package
+`https://github.com/Vonage/vonage-client-sdk-video-transformers.git`, select
+version **2.33.0**, and link its `VonageClientSDKVideoTransformers` product to
+the application target. This supplies the required framework and resources;
+adding `MediQuoSDK.xcframework` alone causes a `Library not loaded:
+@rpath/OpenTokTransformers.framework/OpenTokTransformers` error at launch.
 
 - From the [Releases](https://github.com/mediquo/mediquo-ios-sdk/releases) tab of the Repo, choose the latest release, expand Assets and download the ZIP file
 
@@ -30,6 +45,10 @@ We support installation via Swift Package Manager and as a standalone XCFramewor
 <img width="632" alt="image" src="https://github.com/mediquo/mediquo-ios-sdk/assets/869981/3a6c40d3-f5db-426e-94dc-db23a79d6afe">
 
 ## Integration
+
+See the [SwiftUI demo](MediQuoSDKDemo/MediQuoSDKDemo/MediQuoSDKDemoApp.swift)
+and [UIKit demo](MediQuoSDKDemo/MediQuoSDKUIKitDemo/ViewController.swift) in
+[MediQuoSDKDemo](MediQuoSDKDemo) for integration examples.
 
 In order to integrate the SDK, we support both UIKit-based apps (the ones with `AppDelegate` and `SceneDelegate`) and SwiftUI-based apps (the ones with `@main` and `WindowGroup`).
 
@@ -52,6 +71,19 @@ self.present(vc, animated: true)
 ```
 
 All the possibles views are defined in `MediQuo.ViewKind` and you can use Xcode's autocomplete to find the appropiate view for any use case.
+
+The SwiftUI and UIKit demos include the same consultation and documentation
+entry points as the Android SDK demo. Each button opens the SDK view full screen:
+
+| Demo button | `MediQuo.ViewKind` |
+| --- | --- |
+| Show agenda | `.schedule` |
+| Show New Consultation | `.newAppointment` |
+| Show Immediate Consultation | `.immediateConsultations` |
+| Show documentation | `.documentation` |
+
+These views use the authenticated patient's data and the services enabled for
+their account. The demo menus scroll to keep all entry points accessible.
 
 **Note:**
 For most applications, we recommend instantiating a single `MediQuo` object at the start of an entitled user’s session. Store this instance in AppDelegate or within your dependency management system to ensure consistent access throughout the app.
