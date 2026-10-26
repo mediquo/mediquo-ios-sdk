@@ -11,25 +11,13 @@ let package = Package(
     products: [
         .library(
             name: "MediQuoSDK",
-            targets: ["MediQuoSDK", "MediQuoSDKDependencies"]),
-    ],
-    dependencies: [
-        // Keep aligned with the version used to build MediQuoSDK in mediquo-mobile.
-        .package(url: "https://github.com/Vonage/vonage-client-sdk-video-transformers.git", exact: "2.33.0"),
+            targets: ["MediQuoSDK"]),
     ],
     targets: [
         .binaryTarget(
             name: "MediQuoSDK",
-            url: "https://github.com/mediquo/mediquo-ios-sdk/releases/download/26.10.3/MediQuoSDK.xcframework.zip",
-            checksum: "1840101059070b138f0ececcf06b6fe111a09cd7d30492cbb805e41f44c41223"
-        ),
-        // Binary targets cannot declare dependencies. This source target makes
-        // SwiftPM embed the dynamic framework required by MediQuoSDK.
-        .target(
-            name: "MediQuoSDKDependencies",
-            dependencies: [
-                .product(name: "VonageClientSDKVideoTransformers", package: "vonage-client-sdk-video-transformers"),
-            ]
+            url: "https://github.com/mediquo/mediquo-ios-sdk/releases/download/26.10.4/MediQuoSDK.xcframework.zip",
+            checksum: "7e47b49e69315914f85eb82ea7177ee1ef33d3531b8daa029e25d677e50a3d93"
         )
     ]
 )

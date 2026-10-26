@@ -17,24 +17,9 @@ We support installation via Swift Package Manager and as a standalone XCFramewor
 
 - Go to your Xcode Project and add the package `https://github.com/mediquo/mediquo-ios-sdk.git` and add the Package to your app.
 
-The `MediQuoSDK` product also includes Vonage Video Transformers 2.33.0,
-which supplies the dynamic `OpenTokTransformers.framework` required at launch.
-Swift Package Manager embeds this framework and copies its resource bundle
-automatically. Keep this dependency aligned with the version used to build the SDK.
-
-When installing `MediQuoSDK` through Swift Package Manager, you do not need to
-add Vonage Transformers separately to your app or its `Package.swift`.
-
 <img width="1000" alt="image" src="https://github.com/mediquo/mediquo-ios-sdk/assets/869981/25a5cec8-f98d-483b-87d8-f08db2bd6cea">
 
 ### XCFramework
-
-Manual integrations must also add the Swift package
-`https://github.com/Vonage/vonage-client-sdk-video-transformers.git`, select
-version **2.33.0**, and link its `VonageClientSDKVideoTransformers` product to
-the application target. This supplies the required framework and resources;
-adding `MediQuoSDK.xcframework` alone causes a `Library not loaded:
-@rpath/OpenTokTransformers.framework/OpenTokTransformers` error at launch.
 
 - From the [Releases](https://github.com/mediquo/mediquo-ios-sdk/releases) tab of the Repo, choose the latest release, expand Assets and download the ZIP file
 
